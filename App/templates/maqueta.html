@@ -1,0 +1,41 @@
+{% load staticfiles %}
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Eventos Santiago</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="{%static 'css/style.css'%}">
+</head>
+<body>
+<header>
+  <nav class="main-nav">
+    <ul>
+      <li>
+        <ul>
+          <li><a href="{% url 'index'%}" >Inicio</a></li>
+          <li><a href="#">Eventos</a></li>
+           {% if user.is_authenticated %}
+                <li><a href="#">Mi cuenta</a></li>
+                <li><a href="{% url 'salir'%}">Salir</a></li>
+            {% else %}
+                <li><a href="{% url 'registrarse'%}">Registrarse</a></li>
+                <li><a href="{% url 'login'%}">Iniciar Sesión</a></li>
+            {% endif %}
+          
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</header>
+{% block imagen %}
+
+{% endblock%}
+{% block informacion %}
+{% endblock %}
+
+
+<footer>
+  <div class="copyright"><small>Copyright. All Rights Reserved | by <a target="_blank" rel="nofollow" href="http://www.iamsupview.be">Supview</a>.</small></div>
+</footer>
+</body>
+</html>
