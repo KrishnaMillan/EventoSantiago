@@ -7,12 +7,13 @@ class Cuenta(models.Model):
 	nombre=models.CharField(max_length=1000, null=True)
 	correoAsociado=models.TextField(null=True)
 	#tipo_usuario=models.CharField(max_length=5, choices=tiposUsuarios, null=True)
-	esactiva=models.BooleanField(default=True, null=True)
+	#esactiva=models.BooleanField(default=True, null=True)
 	fecha_registro=models.DateField(max_length=15, null=True)
+	comuna=models.CharField(max_length=1000, null=True)
 
 class Usuario(models.Model):
 	Cuenta=models.ForeignKey(Cuenta, on_delete=models.CASCADE)
-	fec_nac=models.DateField(max_length=15)
+	fec_nac=models.DateField(max_length=15, null=True)
 
 # class Administrador(Cuenta):
 	# fec_nac=models.DateField(max_length=15)

@@ -15,10 +15,10 @@
           <li><a href="{% url 'index'%}" >Inicio</a></li>
           <li><a href="#">Eventos</a></li>
            {% if user.is_authenticated %}
-                <li><a href="#">Mi cuenta</a></li>
+                <li><a href="{% url 'micuenta'%}">Mi cuenta</a></li>
                 <li><a href="{% url 'salir'%}">Salir</a></li>
             {% else %}
-                <li><a href="{% url 'registrarse'%}">Registrarse</a></li>
+                <li><a href="{% url 'registrarse' %}">Registrarse</a></li>
                 <li><a href="{% url 'login'%}">Iniciar Sesión</a></li>
             {% endif %}
           

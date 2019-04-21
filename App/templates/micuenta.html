@@ -1,0 +1,38 @@
+{% extends 'maqueta.html' %}
+{% load staticfiles %}
+{% block informacion %}
+
+<section id="home-head" class="work">
+	</section>
+	<section id="main-content">
+	  <div class="text-intro">
+	    <h2>Mi cuenta</h2>
+	  </div>
+	  <div class="columns">
+
+{% for u in usuario %}
+	<p>Rut: {{u.Cuenta.rut}}</p>
+	<p>Nombre: {{u.Cuenta.nombre}}</p>
+	<p>Fecha de nacimiento: {{u.fec_nac}}</p>
+	<p>Correo: {{u.Cuenta.correoAsociado}}</p>
+	<p>Comuna: {{u.Cuenta.comuna}}</p>
+	<p>Fecha de registo: {{u.Cuenta.fecha_registro}}</p>
+{% endfor %}
+<form action="{% url 'actualizar' %}" method="POST">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" name="Actualizar" value="Actualizar Datos">
+         </form>
+      <form action="" method="POST">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" name="eliminar" value="Desactivar Cuenta">
+         </form>
+
+	  </div>
+	  </div>
+	</section>
+
+
+
+{% endblock %}
