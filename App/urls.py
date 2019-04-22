@@ -8,4 +8,9 @@ urlpatterns=[
     path('salir',views.salir, name="salir"),
     path('micuenta',views.micuenta, name="micuenta"),
     path('actualizar',views.actualizar, name="actualizar"),
+    path('eliminar',views.eliminar, name="eliminar"),
+    path('recuperar',views.recuperar, name="recuperar"),
+    path('recuperarcontrasena',views.recuperarcontrasena, name="recuperarcontrasena"),
+    path('cambiarcontrasena',views.cambiarcontrasena, name="cambiarcontrasena"),
+    path('reactivar',views.reactivar, name="reactivar"),
 ]

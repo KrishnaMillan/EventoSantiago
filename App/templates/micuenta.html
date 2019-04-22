@@ -21,12 +21,17 @@
 <form action="{% url 'actualizar' %}" method="POST">
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <input type="submit" name="Actualizar" value="Actualizar Datos">
+                        <input type="submit" name="actualizar" value="Actualizar Datos">
          </form>
-      <form action="" method="POST">
+      <form action="{% url 'eliminar' %}" method="POST">
                         {% csrf_token %}
                         {{ form.as_p }}
                         <input type="submit" name="eliminar" value="Desactivar Cuenta">
+         </form>
+      <form action="{% url 'cambiarcontrasena' %}" method="POST">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" name="cambiarcontraseña" value="Cambiar Contraseña">
          </form>
 
 	  </div>

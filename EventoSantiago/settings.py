@@ -25,7 +25,7 @@ SECRET_KEY = 'sk3zl0(0)y9x$4jykon(if1t0#)3ldj@+rpt8wxz-6&p4h+9(2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['krishnamillan.pythonanywhere.com', '127.0.0.1']
+ALLOWED_HOSTS = ['krishnamillan.pythonanywhere.com', '127.0.0.1','localhost']
 
 
 # Application definition
@@ -119,3 +119,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_USE_TLS = True
+
+EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_HOST_USER = 'eventosantiago7@gmail.com'
+
+#Must generate specific password for your app in [gmail settings][1]
+EMAIL_HOST_PASSWORD = 'eventosantiago123'
+
+EMAIL_PORT = 587
+
+#This did the trick
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
