@@ -23,5 +23,5 @@ class RecuperaContrasena(forms.Form):
 	rut=forms.CharField(widget=forms.TextInput(), label="Rut")
 
 class RecuperaContrasena2(forms.Form):	
-	contrasena=forms.CharField(widget=forms.PasswordInput(), label="Contraseña")
-	contrasena2=forms.CharField(widget=forms.PasswordInput(), label="Repetir Contraseña")
+	contrasena=forms.CharField(widget=forms.PasswordInput(), label="Contraseña nueva",required=False)
+	contrasena2=forms.CharField(widget=forms.PasswordInput(), label="Repetir Contraseña nueva",required=False)

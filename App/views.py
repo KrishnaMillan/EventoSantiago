@@ -97,7 +97,7 @@ def eliminar(request):
 def actualizar(request):
 	mensaje=""
 	form=ActualizaUsuario(request.POST or None)
-	
+	usuario=Usuario.objects.filter(Cuenta=(Cuenta.objects.get(rut=request.user.get_username())))
 	x=False;
 	if form.is_valid():
 		data=form.cleaned_data
@@ -119,18 +119,25 @@ def actualizar(request):
 			x=True
 		if x:
 			mensaje="Datos actualizados correctamente"
+		else:
+			mensaje="Todos los campos están en blanco, no se han realizado cambios"
 
-	return render(request,"actualizar.html",{'form':form,'mensaje':mensaje})
+	return render(request,"actualizar.html",{'form':form,'mensaje':mensaje,'usuario':usuario})
 
 def recuperar(request):
 	form=RecuperaContrasena(request.POST or None)
+	mensaje=""
 	if form.is_valid():
 		data=form.cleaned_data
 		rut=data.get("rut")
-		cuenta=Cuenta.objects.get(rut=rut)
-		correo=cuenta.correoAsociado
-		send_mail('Recuperar Contraseña','','eventosantiago7@gmail.com',[correo],html_message='Este email fue enviado porque solicitaste recuperar tu contraseña<br><a href="http://127.0.0.1:8000/recuperarcontrasena?user='+rut+'">Click aquí para recuperar contraseña</a><br>si no fuiste tu ignora este email')
-	return render(request,"recuperar.html",{'form':form})
+		try:
+			cuenta=Cuenta.objects.get(rut=rut)
+			correo=cuenta.correoAsociado
+			send_mail('Recuperar Contraseña','','eventosantiago7@gmail.com',[correo],html_message='Este email fue enviado porque solicitaste recuperar tu contraseña<br><a href="http://127.0.0.1:8000/recuperarcontrasena?user='+rut+'">Click aquí para recuperar contraseña</a><br>si no fuiste tu ignora este email')
+			mensaje="Se ha enviado un correo a su mail asociado"
+		except Cuenta.DoesNotExist:
+			mensaje="No se encuentra el rut"
+	return render(request,"recuperar.html",{'form':form,'mensaje':mensaje})
 
 def recuperarcontrasena(request):
 	form=RecuperaContrasena2(request.POST or None)
@@ -148,17 +155,23 @@ def recuperarcontrasena(request):
 @login_required(login_url='ingresar')
 def cambiarcontrasena(request):
 	form=RecuperaContrasena2(request.POST or None)
+	mensaje=""
 	if form.is_valid():
 		data=form.cleaned_data
 		contrasena=data.get("contrasena")
 		contrasena2=data.get("contrasena2")
-		if contrasena==contrasena2:
-			usuario=User.objects.get(username=request.user.get_username())
-			usuario.set_password(contrasena)
-			usuario.save()
+		usuario=User.objects.get(username=request.user.get_username())
+		
+		if(usuario.check_password(request.POST['actual'])):
+			if contrasena==contrasena2:
+				usuario.set_password(contrasena)
+				usuario.save()
+				mensaje="Contraseña cambiada correctamente"
+			else:
+				mensaje="las contraseñas no coinciden"
 		else:
-			mensaje="las contraseñas no coinciden"
-	return render(request,"cambiarcontrasena.html",{'form':form})
+			mensaje="La contraseña actual es incorrecta"
+	return render(request,"cambiarcontrasena.html",{'form':form, 'mensaje':mensaje})
 
 def reactivar(request):
 	usuario=User.objects.get(username=request.GET.get("user"))

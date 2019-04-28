@@ -1,6 +1,10 @@
 {% extends 'maqueta.html' %}
 {% load staticfiles %}
 {% block informacion %}	
+{% ifnotequal mensaje '' %}
+	<script type="text/javascript" >alert("{{mensaje}}")
+    </script>
+{% endifnotequal %}
 	<section id="home-head" class="work">
 	</section>
 	<section id="main-content">
@@ -11,6 +15,7 @@
 
 	 <form method="POST" action="">
 	        {% csrf_token %}
+	        Contraseña actual: <input type="text" name="actual">
 	        {{ form.as_p }}
 	        
 	        <input type="submit" value="Cambiar Contraseña">

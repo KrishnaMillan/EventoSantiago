@@ -1,7 +1,10 @@
 {% extends 'maqueta.html' %}
 {% load staticfiles %}
 {% block informacion %}	
-
+{% ifnotequal mensaje '' %}
+	<script type="text/javascript" >alert("{{mensaje}}")
+    </script>
+{% endifnotequal %}
 	<section id="home-head" class="work">
 	</section>
 	<section id="main-content">
@@ -10,10 +13,35 @@
 	  </div>
 	  <div class="columns">
 
-	 <form method="POST" action="">
-	        {% csrf_token %}
-	        {{ form.as_p }}
-	        <input type="submit" value="Iniciar Sesión">
+	 <form method="POST" id="actualizaDatos" action="">
+	   {% for u in usuario %}
+	        <table>
+        {% csrf_token %}
+        
+		{% for field in form.visible_fields %}
+		      <tr>
+				      	{% ifequal field.label "Nombre" %}
+				        	<td>{{ field.label_tag}}  {{u.Cuenta.nombre}}</td>
+				        {% endifequal %}
+
+				        {% ifequal field.label "Fecha de Nacimiento" %}
+				        	<td>{{ field.label_tag}}  {{u.fec_nac}}</td>
+				        {% endifequal %}
+				        {% ifequal field.label "Comuna" %}
+				        	<td>{{ field.label_tag}}  {{u.Cuenta.comuna}}</td>
+				        {% endifequal %}
+				        {% ifequal field.label "Correo" %}
+				        	<td>{{ field.label_tag}}  {{u.Cuenta.correoAsociado}}</td>
+				        {% endifequal %}
+				        <td>
+				          {{ field }}
+				        </td>
+		      </tr>
+   		 {% endfor %}
+    </table>
+{% endfor %}
+        
+	        <input type="submit" value="Actualizar Datos">
 	 </form>
 	  </div>
 	  </div>
