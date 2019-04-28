@@ -5,6 +5,7 @@
 <title>Eventos Santiago</title>
 <meta charset="utf-8">
 <link rel="stylesheet" href="{%static 'css/style.css'%}">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 <header>
@@ -19,7 +20,7 @@
                 <li><a href="{% url 'salir'%}">Salir</a></li>
             {% else %}
                 <li><a href="{% url 'registrarse' %}">Registrarse</a></li>
-                <li><a href="{% url 'login'%}">Iniciar Sesión</a></li>
+                <li><a href="{% url 'ingresar'%}">Iniciar Sesión</a></li>
             {% endif %}
           
         </ul>
@@ -37,5 +38,6 @@
 <footer>
   <div class="copyright"><small>Copyright. All Rights Reserved | by <a target="_blank" rel="nofollow" href="http://www.iamsupview.be">Supview</a>.</small></div>
 </footer>
+
 </body>
 </html>

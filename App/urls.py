@@ -4,7 +4,7 @@ from django.conf.urls import url, include
 urlpatterns=[
     path('',views.index, name="index"),
     path('registrarse',views.registrarse, name="registrarse"),
-    path('login',views.ingresar, name="login"),
+    path('ingresar',views.ingresar, name="ingresar"),
     path('salir',views.salir, name="salir"),
     path('micuenta',views.micuenta, name="micuenta"),
     path('actualizar',views.actualizar, name="actualizar"),

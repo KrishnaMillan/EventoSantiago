@@ -1,6 +1,6 @@
 from django.shortcuts import render, render_to_response, redirect
 from django.template import loader
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from .forms import AgregaUsuario, Login, ActualizaUsuario, RecuperaContrasena, RecuperaContrasena2
 from .models import Cuenta, Usuario
 import time
@@ -27,42 +27,53 @@ def registrarse(request):
 		comuna=data.get("comuna")
 		fec_nac=data.get("fec_nac")
 		fecha_registro=time.strftime("%Y-%m-%d")
-		if contrasena==contrasena2:
-			cuenta=Cuenta(rut=rut, nombre=nombre, correoAsociado=correoAsociado,comuna=comuna, fecha_registro=fecha_registro)
-			cuenta.save()
-			usuario=Usuario(Cuenta=cuenta, fec_nac=fec_nac)
-			usuario.save()
-			user=User.objects.create_user(username=rut,password=contrasena,is_active=True)
-			user.save()
-			mensaje="Usuario agregado correctamente"
-			try:
-				user.groups.add(Group.objects.get(name="Usuarios"))
-			except Group.DoesNotExist:
-				Group.objects.create(name="Usuarios")
-				user.groups.add(Group.objects.get(name="Usuarios"))
-		else: 
-			mensaje="Las contraseñas no coinciden"
+		try:
+			user=User.objects.get(username=rut)
+			mensaje="Este rut ya está registrado"
+		except:
+			if contrasena==contrasena2:
+				cuenta=Cuenta(rut=rut, nombre=nombre, correoAsociado=correoAsociado,comuna=comuna, fecha_registro=fecha_registro)
+				cuenta.save()
+				usuario=Usuario(Cuenta=cuenta, fec_nac=fec_nac)
+				usuario.save()
+				user=User.objects.create_user(username=rut,password=contrasena,is_active=True)
+				user.save()
+				mensaje="Usuario agregado correctamente"
+				try:
+					user.groups.add(Group.objects.get(name="Usuarios"))
+				except Group.DoesNotExist:
+					Group.objects.create(name="Usuarios")
+					user.groups.add(Group.objects.get(name="Usuarios"))
+			else: 
+				mensaje="Las contraseñas no coinciden"
+			
+
 	return render(request, "registrarse.html",{'form':form, 'mensaje':mensaje})
 
 
 def ingresar(request):
 	form=Login(request.POST or None)
 	mensaje=""
-	if form.is_valid():
-		data=form.cleaned_data
-		cuenta=Cuenta.objects.get(rut=data.get("rut"))
-		correo=cuenta.correoAsociado
-		user=authenticate(username=data.get("rut"),password=data.get("contrasena"))
-		users=User.objects.get(username=data.get("rut"))
-		if user is not None:
-				login(request, user)
-				return redirect('index')
+	try:
+		if form.is_valid():
+			data=form.cleaned_data
+			cuenta=Cuenta.objects.get(rut=data.get("rut"))
+			correo=cuenta.correoAsociado
+			user=authenticate(username=data.get("rut"),password=data.get("contrasena"))
+			users=User.objects.get(username=data.get("rut"))
+			
+			if user is not None:
+					login(request, user)
+					return redirect('index')
 
-		else:
+			else:
+				mensaje="Tu usuario o contraseña es incorrecta, intenta nuevamente!!"
 			if users.is_active==False:
-				mensaje="Tu cuenta está inactiva, se envió un link a tu correo electrónico para reactivarla"
-				send_mail('Reactiva tu cuenta','','eventosantiago7@gmail.com',[correo],html_message='Este email fue enviado porque tu cuenta está inactiva e intentaste iniciar sesión <br><a href="http://127.0.0.1:8000/reactivar?user='+users.username+'">Click aquí para reactivar tu cuenta</a><br>si no fuiste tu ignora este email')
-				return redirect('/')	
+					mensaje="Tu cuenta está inactiva, se envió un link a tu correo electrónico para reactivarla"
+					send_mail('Reactiva tu cuenta','','eventosantiago7@gmail.com',[correo],html_message='Este email fue enviado porque tu cuenta está inactiva e intentaste iniciar sesión <br><a href="http://127.0.0.1:8000/reactivar?user='+users.username+'">Click aquí para reactivar tu cuenta</a><br>si no fuiste tu ignora este email')	
+				
+	except:
+		mensaje="No se ha encontrado el usuario"
 			
 	return render(request,"login.html",{'form':form, 'mensaje':mensaje})
 
@@ -79,8 +90,10 @@ def eliminar(request):
 	user=User.objects.get(username=request.user.get_username())
 	user.is_active=False
 	user.save()
+	mensaje="Desactivada"
 	logout(request)
-	return redirect("/")
+	return render(request,'index.html', {'mensaje':mensaje})
+@login_required(login_url='ingresar')
 def actualizar(request):
 	mensaje=""
 	form=ActualizaUsuario(request.POST or None)

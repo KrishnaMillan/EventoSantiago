@@ -23,7 +23,7 @@
                         {{ form.as_p }}
                         <input type="submit" name="actualizar" value="Actualizar Datos">
          </form>
-      <form action="{% url 'eliminar' %}" method="POST">
+      <form action="{% url 'eliminar' %}" id="eliminaCuenta" method="POST">
                         {% csrf_token %}
                         {{ form.as_p }}
                         <input type="submit" name="eliminar" value="Desactivar Cuenta">
@@ -39,5 +39,5 @@
 	</section>
 
 
-
+<script  src="{%static 'js/validaciones.js'%}"></script>
 {% endblock %}

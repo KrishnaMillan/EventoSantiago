@@ -1,5 +1,6 @@
 {% extends 'maqueta.html' %}
 {% load staticfiles %}
+
 {% block imagen %}
 <section id="video" class="home">
   <h1>Eventos Santiago</h1>
@@ -7,6 +8,11 @@
 </section>
 {% endblock%}
 {% block informacion %}
+{% ifequal mensaje 'Desactivada' %}
+  <script type="text/javascript" >alert("Tu cuenta se ha desactivado correctamente, para volver a activarla inicia sesión")
+    </script>
+  
+{% endifequal %}
 <section id="main-content">
   <div class="text-intro">
     <h2>Nosotros</h2>

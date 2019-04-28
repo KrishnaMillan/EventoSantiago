@@ -1,6 +1,10 @@
 {% extends 'maqueta.html' %}
 {% load staticfiles %}
 {% block informacion %}	
+{% ifnotequal mensaje '' %}
+	<script type="text/javascript" >alert("{{mensaje}}")
+    </script>
+{% endifnotequal %}
 	<section id="home-head" class="work">
 	</section>
 	<section id="main-content">
