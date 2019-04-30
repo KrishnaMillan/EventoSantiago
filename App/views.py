@@ -3,7 +3,7 @@ from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from .forms import AgregaUsuario, Login, ActualizaUsuario, RecuperaContrasena, RecuperaContrasena2
 from .models import Cuenta, Usuario
-import time
+import datetime, time
 from django.contrib.auth.models  import Group, User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -14,18 +14,15 @@ def index(request):
 	return render(request, "index.html")
 
 def registrarse(request):
-	form=AgregaUsuario(request.POST or None)
 	mensaje=""
-	if form.is_valid():
-		data=form.cleaned_data
-
-		nombre=data.get("nombre")
-		rut=data.get("rut")
-		contrasena=data.get("contrasena")
-		contrasena2=data.get("contrasena2")
-		correoAsociado=data.get("correoAsociado")
-		comuna=data.get("comuna")
-		fec_nac=data.get("fec_nac")
+	if request.POST:
+		nombre=request.POST.get("nombre")
+		rut=request.POST.get("rut")
+		contrasena=request.POST.get("contrasena")
+		contrasena2=request.POST.get("contrasena2")
+		correoAsociado=request.POST.get("correoAsociado")
+		comuna=request.POST.get("comuna")
+		fec_nac=request.POST.get("fec_nac")
 		fecha_registro=time.strftime("%Y-%m-%d")
 		try:
 			user=User.objects.get(username=rut)
@@ -48,7 +45,7 @@ def registrarse(request):
 				mensaje="Las contraseñas no coinciden"
 			
 
-	return render(request, "registrarse.html",{'form':form, 'mensaje':mensaje})
+	return render(request, "registrarse.html",{'mensaje':mensaje})
 
 
 def ingresar(request):
@@ -96,33 +93,33 @@ def eliminar(request):
 @login_required(login_url='ingresar')
 def actualizar(request):
 	mensaje=""
-	form=ActualizaUsuario(request.POST or None)
 	usuario=Usuario.objects.filter(Cuenta=(Cuenta.objects.get(rut=request.user.get_username())))
-	x=False;
-	if form.is_valid():
-		data=form.cleaned_data
-		nombre=data.get("nombre")
-		correoAsociado=data.get("correoAsociado")
-		fec_nac=data.get("fec_nac")
-		comuna=data.get("comuna")
-		if(nombre!= ""):
+	cuenta=Cuenta.objects.get(rut=request.user.get_username())
+	if request.method=='POST':
+		nombre=request.POST.get("nombre")
+		correoAsociado=request.POST.get("correoAsociado")
+		comuna=request.POST.get("comuna")
+		mensaje="Todos los campos estan en blanco, no se han realizado cambios"
+		
+		if(nombre!=None and nombre!=""):
 			Cuenta.objects.filter(rut=request.user.get_username()).update(nombre=nombre)
-			x=True
-		if(correoAsociado!= ""):
-			Cuenta.objects.filter(rut=request.user.get_username()).update(correoAsociado=correoAsociado)
-			x=True
-		if(fec_nac!= None):
-			Usuario.objects.filter(Cuenta=(Cuenta.objects.get(rut=request.user.get_username()))).update(fec_nac=fec_nac)
-			x=True
-		if(comuna!= ""):
-			Usuario.objects.filter(Cuenta=(Cuenta.objects.get(rut=request.user.get_username()))).update(comuna=comuna)
-			x=True
-		if x:
 			mensaje="Datos actualizados correctamente"
-		else:
-			mensaje="Todos los campos están en blanco, no se han realizado cambios"
+			
 
-	return render(request,"actualizar.html",{'form':form,'mensaje':mensaje,'usuario':usuario})
+
+
+		if(correoAsociado!=None and correoAsociado!=""):
+			Cuenta.objects.filter(rut=request.user.get_username()).update(correoAsociado=correoAsociado)
+			mensaje="Datos actualizados correctamente"
+			
+
+
+
+		if(comuna!=None and comuna!=""):
+			Cuenta.objects.filter(rut=request.user.get_username()).update(comuna=comuna)
+			mensaje="Datos actualizados correctamente"
+			
+	return render(request,"actualizar.html",{'usuario':usuario,'mensaje':mensaje})
 
 def recuperar(request):
 	form=RecuperaContrasena(request.POST or None)
@@ -178,3 +175,5 @@ def reactivar(request):
 	usuario.is_active=True
 	usuario.save()
 	return render(request,"reactivar.html")
+
+

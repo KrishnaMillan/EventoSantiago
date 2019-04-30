@@ -16,9 +16,12 @@
           <li><a href="{% url 'index'%}" >Inicio</a></li>
           <li><a href="#">Eventos</a></li>
            {% if user.is_authenticated %}
-                <li><a href="{% url 'micuenta'%}">Mi cuenta</a></li>
+              {% if 'Usuarios' ==  request.user.groups.all.0.name %} 
+              <li><a href="{% url 'micuenta'%}">Mi cuenta</a></li>
                 <li><a href="{% url 'salir'%}">Salir</a></li>
-            {% else %}
+              {%endif%}
+              {% else %}
+                
                 <li><a href="{% url 'registrarse' %}">Registrarse</a></li>
                 <li><a href="{% url 'ingresar'%}">Iniciar Sesión</a></li>
             {% endif %}

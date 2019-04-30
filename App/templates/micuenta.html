@@ -33,12 +33,12 @@
 </table>
 {% endfor %}
 	
-<form action="{% url 'actualizar' %}" method="POST">
+<form action="{% url 'actualizar' %}" method="GET">
                         {% csrf_token %}
                         {{ form.as_p }}
 
                        
-                        <input type="submit" name="actualizar" value="Actualizar Datos">
+                        <input type="submit" name="actualizar" value="Actualiza tus Datos">
          </form>
       <form action="{% url 'eliminar' %}" id="eliminaCuenta" method="POST">
                         {% csrf_token %}

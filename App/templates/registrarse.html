@@ -5,8 +5,8 @@
 {% ifnotequal mensaje '' %}
 	<script type="text/javascript" >alert("{{mensaje}}")
     </script>
-{% endifnotequal %}
 
+{% endifnotequal %}
 	<section id="home-head" class="work">
 	</section>
 	<section id="main-content">
@@ -14,9 +14,64 @@
 	    <h2>Registrate</h2>
 	  </div>
 	  <div class="columns">
-	 <form method="POST" action="">
-	        {% csrf_token %}
-	        {{ form.as_p }}
+	 <form method="POST" id="registraPersona" action="">
+	    {% csrf_token %}
+	    <div>
+	        <label>Rut </label>
+	        <input type="text" id="rut" name="rut" required placeholder="12345678-4">
+	    </div>
+
+	    <div>
+	    	<label>Nombre </label>
+	    	<input name="nombre" id="nombre" required placeholder="Nombre" class="form-control" minlength="3" maxlength="15"  type="text" >
+	    </div>
+	    <div>
+	      	<label>Fecha de Nacimiento </label>
+	      	<input type="date" id="fec_nac" name="fec_nac" required max="2003-12-31">
+	    </div>
+	    <div>
+	        <label>Correo electrónico </label>
+	        <input type="email" id="correoAsociado" name="correoAsociado" required placeholder="alguien@gmail.com">
+	    </div>
+	    <div>
+	        <label>Comuna </label>
+	        <select name="comuna">
+	        	<option value="Santiago">Santiago</option><option value="Cerrillos">Cerrillos</option>
+  				<option value="Cerro Navia">Cerro Navia</option><option value="Conchali">Conchalí</option>
+  				<option value="El Bosque">El Bosque</option><option value="Estación Central">Estación Central</option>
+  				<option value="Huechuraba">Huechuraba</option><option value="Independencia">Independencia</option>
+  				<option value="La Cisterna">La Cisterna</option><option value="La Florida">La Florida</option>
+  				<option value="La Granja">La Granja</option><option value="La Pintana">La Pintana</option>
+  				<option value="La Reina">La Reina</option><option value="Las Condes">Las Condes</option>
+  				<option value="Lo Barnechea">Lo Barnechea</option><option value="Lo Espejo">Lo Espejo</option>
+  				<option value="Lo Prado">Lo Prado</option><option value="Macul">Macul</option>
+  				<option value="Maipú">Maipú</option><option value="Ñuñoa">Ñuñoa</option>
+  				<option value="Pedro Aguirre Cerda">Pedro Aguirre Cerda</option><option value="Peñalolén">Peñalolén</option>
+  				<option value="Providencia">Providencia</option><option value="Pudahuel">Pudahuel</option>
+  				<option value="Quilicura">Quilicura</option><option value="Quinta Normal">Quinta Normal</option>
+  				<option value="Recoleta">Recoleta</option><option value="Renca">Renca</option>
+				<option value="San Joaquín">San Joaquín</option><option value="San Miguel">San Miguel</option>
+				<option value="San Ramón">San Ramón</option><option value="Vitacura">Vitacura</option>
+				<option value="Puente Alto">Puente Alto</option><option value="Pirque">Pirque</option>
+				<option value="San José de Maipo">San José de Maipo</option><option value="Colina">Colina</option>
+				<option value="Lampa">Lampa</option><option value="Til til">Til til</option>
+				<option value="San Bernardo">San Bernardo</option><option value="Buin">Buin</option>
+				<option value="Calera de Tango">Calera de Tango</option><option value="Paine">Paine</option>
+				<option value="Melipilla">Melipilla</option><option value="Alhué">Alhué</option>
+				<option value="Curacaví">Curacaví</option><option value="María Pinto">María Pinto</option>
+				<option value="San Pedro">San Pedro</option><option value="Talagante">Talagante</option>
+				<option value="El Monte">El Monte</option><option value="Isla de Maipo">Isla de Maipo</option>
+				<option value="Padre Hurtado">Padre Hurtado</option><option value="Peñaflor">Peñaflor</option>
+  			</select>
+	    </div>
+	    <div>
+	        <label>Contraseña </label>
+	        <input type="password" id="contrasena" name="contrasena" required placeholder="*******" minlength="8" maxlength="16">
+	    </div>
+	    <div>
+	        <label>Repita Contraseña </label>
+	        <input type="password" id="contrasena2" name="contrasena2" required placeholder="********" minlength="8" maxlength="16">
+	    </div>  
 	        <input type="submit" value="Registrarse">
 	 </form>
 	
@@ -24,5 +79,5 @@
 	  </div>
 	  </div>
 	</section>
-
+<script  src="{%static 'js/validaciones.js'%}"></script>
 {% endblock %}
