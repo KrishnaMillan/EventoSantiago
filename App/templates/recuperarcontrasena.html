@@ -1,6 +1,10 @@
 {% extends 'maqueta.html' %}
 {% load staticfiles %}
 {% block informacion %}	
+{% ifnotequal mensaje '' %}
+	<script type="text/javascript" >alert("{{mensaje}}")
+    </script>
+{% endifnotequal %}
 	<section id="home-head" class="work">
 	</section>
 	<section id="main-content">
@@ -9,13 +13,14 @@
 	  </div>
 	  <div class="columns">
 
-	 <form method="POST" action="">
+	 <form method="POST" id="recuperaContrasena2" action="">
 	        {% csrf_token %}
-	        {{ form.as_p }}
+	        Contraseña nueva: <input type="password" name="contrasena1" id="contrasena1" required>
+	        Repetir contraseña: <input type="password" name="contrasena2" id="contrasena2" required>
 	        <input type="submit" value="Cambiar Contraseña">
 	 </form>
 	  </div>
 	  </div>
 	</section>
-
+<script  src="{%static 'js/validaciones.js'%}"></script>
 {% endblock %}

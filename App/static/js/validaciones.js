@@ -149,7 +149,78 @@ $("#actualizaDatos").submit(function() {
 		$("#nombre").val(nom);
 	});
 
+//Cambiar Contraseña
+$("#cambiaContrasena").submit(function() {
+		var actual=$("#actual").val();
+		actual=$.trim(actual);
+		$("#actual").val(actual);
 
+		var contrasena1=$("#contrasena1").val();
+		contrasena1=$.trim(contrasena1);
+		$("#contrasena1").val(contrasena1);
+
+		var contrasena2=$("#contrasena2").val();
+		contrasena2=$.trim(contrasena2);
+		$("#contrasena2").val(contrasena2);
+
+
+		if($("#actual").val()=="" || $("#contrasena1").val()=="" || $("#contrasena2").val() ==""){
+			alert("No puedes rellenar los campos con espacios!!!");
+			return false;
+		}else{
+			if($("#contrasena1").val()!=$("#contrasena2").val()){
+				alert("Las contraseñas no coinciden!");
+				return false;
+			}else{
+				return true;
+			}
+
+		}
+	});
+
+//Recuperar contraseña 1
+$("#recuperaContrasena1").submit(function() {
+
+
+		error_message="";
+		error_rut=false;
+		check_rut();
+		if(error_rut==true){
+			alert(error_message.toLowerCase());
+			return false;	
+		}else{
+
+				return true;
+			}
+		
+	});
+
+//Recuperar contraseña 2
+$("#recuperaContrasena2").submit(function() {
+
+		var contrasena1=$("#contrasena1").val();
+		contrasena1=$.trim(contrasena1);
+		$("#contrasena1").val(contrasena1);
+
+		var contrasena2=$("#contrasena2").val();
+		contrasena2=$.trim(contrasena2);
+		$("#contrasena2").val(contrasena2);
+
+
+		if($("#contrasena1").val()=="" || $("#contrasena2").val() ==""){
+			alert("No puedes rellenar los campos con espacios!!!");
+			return false;
+		}else{
+			if($("#contrasena1").val()!=$("#contrasena2").val()){
+				alert("Las contraseñas no coinciden!");
+				return false;
+			}else{
+				return true;
+			}
+
+		}
+		
+	});
 
 
 //Eliminar cuenta
@@ -162,4 +233,6 @@ $("#eliminaCuenta").submit(function() {
 		}
 
 	});
+
+
 });

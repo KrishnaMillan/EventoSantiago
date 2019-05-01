@@ -13,13 +13,14 @@
 	  </div>
 	  <div class="columns">
 
-	 <form method="POST" action="">
+	 <form method="POST" id="recuperaContrasena1" action="">
 	        {% csrf_token %}
-	        {{ form.as_p }}
+	        <label>Rut:</label>
+	        <input type="text" id="rut" name="rut" required placeholder="12345678-4">
 	        <input type="submit" value="Enviar correo">
 	 </form>
 	  </div>
 	  </div>
 	</section>
-
+<script  src="{%static 'js/validaciones.js'%}"></script>
 {% endblock %}

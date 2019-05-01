@@ -40,12 +40,12 @@
                        
                         <input type="submit" name="actualizar" value="Actualiza tus Datos">
          </form>
-      <form action="{% url 'eliminar' %}" id="eliminaCuenta" method="POST">
+      <form action="{% url 'eliminar' %}" id="eliminaCuenta" method="GET">
                         {% csrf_token %}
                         {{ form.as_p }}
                         <input type="submit" name="eliminar" value="Desactivar Cuenta">
          </form>
-      <form action="{% url 'cambiarcontrasena' %}" method="POST">
+      <form action="{% url 'cambiarcontrasena' %}" method="GET">
                         {% csrf_token %}
                         {{ form.as_p }}
                         <input type="submit" name="cambiarcontraseña" value="Cambiar Contraseña">

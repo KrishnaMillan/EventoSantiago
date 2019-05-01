@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -8,6 +9,7 @@ class Cuenta(models.Model):
 	correoAsociado=models.TextField(null=True)
 	#tipo_usuario=models.CharField(max_length=5, choices=tiposUsuarios, null=True)
 	#esactiva=models.BooleanField(default=True, null=True)
+	user=models.OneToOneField(User,on_delete=models.CASCADE, null=True )
 	fecha_registro=models.DateField(max_length=15, null=True)
 	comuna=models.CharField(max_length=1000, null=True)
 
