@@ -15,9 +15,9 @@
 
 	 <form method="POST" id="cambiaContrasena" action="">
 	        {% csrf_token %}
-	        Contraseña actual: <input type="password" name="actual" id="actual" required>
-	        Contraseña nueva: <input type="password" name="contrasena1" id="contrasena1" required>
-	        Repetir contraseña: <input type="password" name="contrasena2" id="contrasena2" required>
+	        Contraseña actual: <input type="password" name="actual" id="actual" required placeholder="********" minlength="8" maxlength="16">
+	        Contraseña nueva: <input type="password" name="contrasena1" id="contrasena1" required placeholder="********" minlength="8" maxlength="16">
+	        Repetir contraseña: <input type="password" name="contrasena2" id="contrasena2" required placeholder="********" minlength="8" maxlength="16">
 	        
 	        
 	        <input type="submit" value="Cambiar Contraseña">
