@@ -2,8 +2,9 @@ from django.shortcuts import render, render_to_response, redirect
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from .forms import AgregaUsuario, Login, ActualizaUsuario, RecuperaContrasena, RecuperaContrasena2
-from .models import Cuenta, Usuario
+from .models import Cuenta, Usuario, RegistroEmail
 import datetime, time
+import uuid
 from django.contrib.auth.models  import Group, User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -66,8 +67,11 @@ def ingresar(request):
 			else:
 				mensaje="Tu usuario o contraseña es incorrecta, intenta nuevamente!!"
 			if users.is_active==False:
-					mensaje="Tu cuenta está inactiva, se envió un link a tu correo electrónico para reactivarla"
-					send_mail('Reactiva tu cuenta','','eventosantiago7@gmail.com',[correo],html_message='Este email fue enviado porque tu cuenta está inactiva e intentaste iniciar sesión <br><a href="http://127.0.0.1:8000/reactivar?user='+users.username+'">Click aquí para reactivar tu cuenta</a><br>si no fuiste tu ignora este email')	
+				iduuid=str(uuid.uuid4())
+				registro=RegistroEmail(Cuenta=cuenta, iduuid=iduuid)
+				registro.save()
+				mensaje="Tu cuenta está inactiva, se envió un link a tu correo electrónico para reactivarla"
+				send_mail('Reactiva tu cuenta','','eventosantiago7@gmail.com',[correo],html_message='Este email fue enviado porque tu cuenta está inactiva e intentaste iniciar sesión <br><a href="http://127.0.0.1:8000/reactivar?iduuid='+iduuid+'&user='+users.username+'">Click aquí para reactivar tu cuenta</a><br>si no fuiste tu ignora este email')	
 				
 	except:
 		mensaje="No se ha encontrado el usuario"
@@ -117,30 +121,40 @@ def actualizar(request):
 
 def recuperar(request):
 	mensaje=""
+	iduuid=str(uuid.uuid4())
 	if request.POST:
 		rut=request.POST.get("rut")
 		try:
 			cuenta=Cuenta.objects.get(rut=rut)
 			correo=cuenta.correoAsociado
-			send_mail('Recuperar Contraseña','','eventosantiago7@gmail.com',[correo],html_message='Este email fue enviado porque solicitaste recuperar tu contraseña<br><a href="http://127.0.0.1:8000/recuperarcontrasena?user='+rut+'">Click aquí para recuperar contraseña</a><br>si no fuiste tu ignora este email')
+			send_mail('Recuperar Contraseña','','eventosantiago7@gmail.com',[correo],html_message='Este email fue enviado porque solicitaste recuperar tu contraseña<br><a href="http://127.0.0.1:8000/recuperarcontrasena?iduuid='+iduuid+'&user='+rut+'">Click aquí para recuperar contraseña</a><br>si no fuiste tu ignora este email')
 			mensaje="Se ha enviado un correo a su mail asociado"
+			registro=RegistroEmail(Cuenta=cuenta, iduuid=iduuid)
+			registro.save()
 		except Cuenta.DoesNotExist:
 			mensaje="No se encuentra el rut"
 	return render(request,"recuperar.html",{'mensaje':mensaje})
 
 def recuperarcontrasena(request):
+	existe=True
 	mensaje=""
-	if request.POST:
-		contrasena=request.POST.get("contrasena1")
-		contrasena2=request.POST.get("contrasena2")
-		if contrasena==contrasena2:
-			usuario=User.objects.get(username=request.GET.get("user"))
-			usuario.set_password(contrasena)
-			usuario.save()
-			mensaje="Contraseña actualizada correctamente"
-		else:
-			mensaje="Las contraseñas no coinciden"
-	return render(request,"recuperarcontrasena.html",{'mensaje':mensaje})
+	try:
+		cuenta=Cuenta.objects.get(rut=request.GET.get("user"))
+		registro=RegistroEmail.objects.get(Cuenta=cuenta, iduuid=request.GET.get("iduuid"))
+		if request.POST:
+			contrasena=request.POST.get("contrasena1")
+			contrasena2=request.POST.get("contrasena2")
+			if contrasena==contrasena2:
+				usuario=User.objects.get(username=request.GET.get("user"))
+				usuario.set_password(contrasena)
+				usuario.save()
+				mensaje="Contraseña actualizada correctamente"
+				registro.delete()
+			else:
+				mensaje="Las contraseñas no coinciden"
+	except:
+		existe=False
+	return render(request,"recuperarcontrasena.html",{'mensaje':mensaje, 'existe':existe})
 
 
 @login_required(login_url='ingresar')
@@ -164,9 +178,18 @@ def cambiarcontrasena(request):
 	return render(request,"cambiarcontrasena.html",{'mensaje':mensaje})
 
 def reactivar(request):
-	usuario=User.objects.get(username=request.GET.get("user"))
-	usuario.is_active=True
-	usuario.save()
-	return render(request,"reactivar.html")
+	existe=True
+	try:
+		cuenta=Cuenta.objects.get(rut=request.GET.get("user"))
+		registro=RegistroEmail.objects.get(Cuenta=cuenta, iduuid=request.GET.get("iduuid"))
+		usuario=User.objects.get(username=request.GET.get("user"))
+		usuario.is_active=True
+		usuario.save()
+		registro.delete()
+	except:
+		existe=False
+
+
+	return render(request,"reactivar.html",{'existe':existe})
 
 

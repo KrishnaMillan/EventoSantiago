@@ -17,6 +17,10 @@ class Usuario(models.Model):
 	Cuenta=models.ForeignKey(Cuenta, on_delete=models.CASCADE)
 	fec_nac=models.DateField(max_length=15, null=True)
 
+class RegistroEmail(models.Model):
+	Cuenta=models.ForeignKey(Cuenta, on_delete=models.CASCADE, null=True)
+	iduuid=models.CharField(max_length=1000, null=True)
+
 # class Administrador(Cuenta):
 	# fec_nac=models.DateField(max_length=15)
 	# fec_ingreso=models.DateField(max_length=15)
