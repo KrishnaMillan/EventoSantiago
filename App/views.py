@@ -1,7 +1,7 @@
 from django.shortcuts import render, render_to_response, redirect
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
-from .forms import AgregaUsuario, Login, ActualizaUsuario, RecuperaContrasena, RecuperaContrasena2
+from .forms import Login
 from .models import Cuenta, Usuario, RegistroEmail
 import datetime, time
 import uuid
