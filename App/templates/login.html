@@ -12,14 +12,17 @@
 	    <h2>Iniciar Sesión</h2>
 	  </div>
 	  <div class="columns">
-
+	  	<div style="width: 100%; text-align: justify; padding-left: 25%; padding-right: 25%;">
 	 <form method="POST" action="">
 	        {% csrf_token %}
 	        {{ form.as_p }}
-	        <input type="submit" value="Iniciar Sesión">
-	 </form>
-	 <a href="{% url 'recuperar' %}">¿Olvidaste tu contraseña?</a>
-	  </div>
+	      	<center><button type="	submit" value="Iniciar Sesión" class="btn btn-primary">Iniciar Sesión</button></center>
+	 </form><br>
+	 <center><a href="{% url 'recuperar' %}" >¿Olvidaste tu contraseña?</a></center><br>
+	 <center><p>¿No tienes una cuenta? <a href="{% url 'registrarse' %}"> Regístrate</a></p></center>
+
+	  	</div>
+	</div>
 	  </div>
 	</section>
 
