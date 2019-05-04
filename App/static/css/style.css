@@ -217,7 +217,7 @@ footer .copyright a:hover {
 	background:url("../images/bgwork.jpg");
 	background-size:cover;
 }
-#iniciaSesion .form-control{
+#iniciaSesion{
 	width: 100%;
 	text-align: justify;
   	padding-left: 25%; 
