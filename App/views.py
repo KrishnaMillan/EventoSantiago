@@ -30,12 +30,13 @@ def registrarse(request):
 			mensaje="Este rut ya está registrado"
 		except:
 			if contrasena==contrasena2:
-				usuario=Usuario(Cuenta=cuenta, fec_nac=fec_nac)
-				usuario.save()
+				
 				user=User.objects.create_user(username=rut,password=contrasena,is_active=True)
 				user.save()
 				cuenta=Cuenta(rut=rut, nombre=nombre, correoAsociado=correoAsociado, user=user, comuna=comuna, fecha_registro=fecha_registro)
 				cuenta.save()
+				usuario=Usuario(Cuenta=cuenta, fec_nac=fec_nac)
+				usuario.save()
 				mensaje="Usuario agregado correctamente"
 				try:
 					user.groups.add(Group.objects.get(name="Usuarios"))

@@ -120,6 +120,7 @@ header .main-nav li a:hover, header .main-nav li a.active {
 	color:#606060;
 	text-align:center;
 }
+
 div.columns {
 	height:1%;
 }
@@ -200,123 +201,27 @@ footer .copyright a:hover {
 	text-transform:uppercase;
 	padding-top:100px;
 }
-#home-head h1 span {
-	color:#fff;
-	display:block;
-}
-#video {
-	content:"";
-	display:block;
-	min-height:300px;
-	width:100%;
-	text-align:center;
-	box-shadow:inset 0 -1px 5px rgba(0,0,0,0.6);
-}
-#video h1 {
-	font-size:64px;
-	color:#fff;
-	line-height:0.879em;
-	text-shadow:0 1px 2px rgba(0,0,0,0.4);
-	text-transform:uppercase;
-	padding-bottom:20px;
-	padding-top:120px;
-}
-#video h2 {
+#home-head h2 {
 	font-size:13px;
 	color:#FFF;
 	line-height:1em;
 	letter-spacing:2px;
 	text-transform:uppercase;
 }
-#contact-form {
-	padding:0;
-	overflow:hidden;
-	width:95%;
-	margin:0 auto;
-	position:relative;
-}
-#contact-form textarea {
-	font-weight:400;
-	font-size:14px;
-	resize:none;
-	color:#4f4f4f;
-	float:left;
-	margin-top:0;
-	width:400px;
-	height:115px;
-	margin-bottom:10px;
-	padding:19px 13px 14px 50px;
-	border:1px solid #f1f1f1;
-	font-family:"Open Sans", sans-serif;
-}
-#contact-form #message {
-	box-shadow:0 1px 3px rgba(0,0,0,0.1);
-}
-#contact-form .text-input {
-	font-weight:400;
-	font-size:14px;
-	float:right;
+#home-head h1 span {
+	color:#fff;
 	display:block;
-	width:355px;
-	height:19px;
-	color:#4f4f4f;
-	padding:13px 13px 13px 51px;
-	margin-bottom:20px;
-	border:1px solid #f1f1f1;
-	box-shadow:0 1px 3px rgba(0,0,0,0.1);
-	font-family:"Open Sans", sans-serif;
 }
-#contact-form .btn-input {
-	float:right;
-	display:block;
-	width:420px;
-	height:82px;
-	border:none;
-	padding:0;
-	margin:0;
-	cursor:hand;
-	font-size:20px;
-	color:#FFF;
-	background-color:#e00966;
-	font-family:"Open Sans", sans-serif;
-	transition:all 0.5s ease-in-out;
-}
-#contact-form .btn-input:hover {
-	background-color:#e187ae;
-	color:#FFF;
-}
-#contact-form .crayonico {
-	position:absolute;
-	left:15px;
-	top:15px;
-	background-image:url("../images/crayon.png");
-	background-repeat:no-repeat;
-	width:23px;
-	height:23px;
-}
-#contact-form .emailico {
-	position:absolute;
-	left:495px;
-	top:15px;
-	background-image:url("../images/email.png");
-	background-repeat:no-repeat;
-	width:22px;
-	height:16px;
-}
+
 .work, .home, .contact {
 	background:url("../images/bgwork.jpg");
 	background-size:cover;
 }
-
-div.formRegistro{
-	flex-wrap: wrap;
-	display: flex;
-	margin-top: 100px;
-
-	width:100%;
-	text-align:right;
-	box-shadow:inset 0 -1px 5px rgba(0,0,0,0.6);
-
+#iniciaSesion{
+	width: 100%;
+	text-align: justify;
+  	padding-left: 25%; 
+  	padding-right: 25%;"
 }
 
 @media handheld and (max-width:480px), screen and (max-device-width:480px), screen and (max-width:767px) {
@@ -325,15 +230,16 @@ body {
 }
 }
 @media handheld and (max-width:479px), screen and (max-device-width:479px), screen and (max-width:479px) {
-#contact-form .text-input {
-	float:left;
-}
+
 header {
 	border-bottom:none;
 	position:relative;
+	background:#1D1D1D;
 }
 #home-head {
-	min-height:250px;
+	min-height:500px;
+	text-align: center;
+
 }
 header .main-nav {
 	width:100%;
@@ -349,13 +255,43 @@ header .main-nav ul li, header .main-nav ul>li.last {
 	width:100%;
 }
 header .main-nav ul li a {
-	padding:4px 0;
-	background:#e4e4e4;
+	font-size: 18px;
+	padding:18px 0;
+	background:#1D1D1D;
 	display:block;
-	margin-bottom:4px;
+	margin-bottom:2px;
+  	border-bottom: 1px solid white;
 }
+header .main-nav ul li a:hover{
+	background:gray;
+}
+
+#iniciaSesion{
+	padding: 0;
+	min-height: 40px;
+	font-size: 25px;
+	text-align: center;
+	
+}
+#iniciaSesion .form-control{
+
+	min-height: 60px;
+	text-align: center;
+	
+}
+#iniciaSesion .btn{
+
+	min-height: 15%;
+	width: 20%;
+	
+}
+
+
 div.columns {
 	width:100%;
+	text-align: center;
+	font-size: 20px;
+
 }
 div.one-half, div.one-third, div.two-third, div.three-fourth, div.one-fourth {
 	margin-left:0;
@@ -365,12 +301,16 @@ div.one-third, div.one-fourth, .copyright {
 	width:95%;
 	float:none;
 	padding:0 0 0 10px;
+	border-bottom:1px solid #e5e4e4;
 }
+
+
+
 .copyright {
 	text-align:center;
 }
 #main-content .text-intro h2 {
-	font-size:30px;
+	font-size:45px;
 }
 }
 
