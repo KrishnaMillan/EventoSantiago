@@ -3,58 +3,58 @@
 {% block informacion %}
 
 <section id="home-head" class="work">
-	</section>
-	<section id="main-content">
-	  <div class="text-intro">
-	    <h2>Mi cuenta</h2>
-	  </div>
-	  <div class="columns">
-{% for u in usuario %}
-<table>
-	<tr>
-		<td>Rut:</td><td>{{u.Cuenta.rut}}</td>
-	</tr>
-	<tr>
-		<td>Nombre:</td><td>{{u.Cuenta.nombre}}</td>
-	</tr>
-	<tr>
-		<td>Fecha de nacimiento:</td> <td>{{u.fec_nac}}</td>
-	</tr>
-	<tr>
-		<td>Correo:</td><td>{{u.Cuenta.correoAsociado}}</td>
-	</tr>
-	<tr>
-		<td>Comuna:</td><td>{{u.Cuenta.comuna}}</td>
-	</tr>
-	<tr>
-		<td>Fecha de registro:</td> <td>{{u.Cuenta.fecha_registro}}</td>
-	</tr>
-
-</table>
-{% endfor %}
-	
-<form action="{% url 'actualizar' %}" method="GET">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-
-                       
-                        <input type="submit" name="actualizar" value="Actualiza tus Datos">
-         </form>
-      <form action="{% url 'eliminar' %}" id="eliminaCuenta" method="GET">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <input type="submit" name="eliminar" value="Desactivar Cuenta">
-         </form>
-      <form action="{% url 'cambiarcontrasena' %}" method="GET">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <input type="submit" name="cambiarcontraseña" value="Cambiar Contraseña">
-         </form>
-
-	  </div>
-	  </div>
-	</section>
-
-
+</section>
+<section id="main-content">
+	<div class="text-intro">
+		<h2>Mi cuenta</h2>
+	</div>
+	<div class="columns">
+		{% for u in usuario %}
+		<table class="table table-striped">
+			<tr>
+				<td class="font-weight-bold">Rut:</td><td>{{u.Cuenta.rut}}</td>
+			</tr>
+			<tr>
+				<td class="font-weight-bold">Nombre:</td><td>{{u.Cuenta.nombre}}</td>
+			</tr>
+			<tr>
+				<td class="font-weight-bold">Fecha de nacimiento:</td> <td>{{u.fec_nac}}</td>
+			</tr>
+			<tr>
+				<td class="font-weight-bold">Correo:</td><td>{{u.Cuenta.correoAsociado}}</td>
+			</tr>
+			<tr>
+				<td class="font-weight-bold">Comuna:</td><td>{{u.Cuenta.comuna}}</td>
+			</tr>
+			<tr>
+				<td class="font-weight-bold">Fecha de registro:</td> <td>{{u.Cuenta.fecha_registro}}</td>
+			</tr>
+		</table>
+		{% endfor %}
+		<div class="form-row">
+			<div class="form-group col-md-4">
+				<form action="{% url 'actualizar' %}" method="GET">
+					{% csrf_token %}
+					{{ form.as_p }}
+					<button type="submit" class="btn btn-info" name="actualizar" value="Actualiza tus Datos">Actualiza tus Datos</button>
+				</form>
+			</div>
+			<div class="form-group col-md-4">
+				<form action="{% url 'eliminar' %}" id="eliminaCuenta" method="GET">
+    				{% csrf_token %}
+    				{{ form.as_p }}
+   					<button type="submit" class="btn btn-danger" name="eliminar" value="Desactivar Cuenta">Desactivar Cuenta</button>
+				</form>
+			</div>
+			<div class="form-group col-md-4">
+				<form action="{% url 'cambiarcontrasena' %}" method="GET">
+    				{% csrf_token %}
+    				{{ form.as_p }}
+					<button type="submit" name="cambiarcontraseña" value="Cambiar Contraseña" class="btn btn-secondary">Cambiar Contraseña</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
 <script  src="{%static 'js/validaciones.js'%}"></script>
 {% endblock %}

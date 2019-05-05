@@ -16,8 +16,8 @@
 {% if existe %}
 		 <form method="POST" id="recuperaContrasena2" action="">
 		        {% csrf_token %}
-		        Contraseña nueva: <input type="password" name="contrasena1" id="contrasena1" required placeholder="********" minlength="8" maxlength="16">
-		        Repetir contraseña: <input type="password" name="contrasena2" id="contrasena2" required placeholder="********" minlength="8" maxlength="16">
+		        <label>Contraseña nueva: </label><input type="password" name="contrasena1" id="contrasena1" required placeholder="********" minlength="8" maxlength="16">
+		        <label>Repetir contraseña:</label> <input type="password" name="contrasena2" id="contrasena2" required placeholder="********" minlength="8" maxlength="16">
 		        <input type="submit" value="Cambiar Contraseña">
 		 </form>
 		 {% else %}

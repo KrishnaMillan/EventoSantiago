@@ -8,19 +8,27 @@
 	<section id="home-head" class="work">
 	</section>
 	<section id="main-content">
-	  <div class="text-intro">
-	    <h2>Cambiar Contraseña</h2>
-	  </div>
-	  <div class="columns">
+		<div class="text-intro">
+			<h2>Cambiar Contraseña</h2>
+		</div>
 
-	 <form method="POST" id="cambiaContrasena" action="">
-	        {% csrf_token %}
-	        Contraseña actual: <input type="password" name="actual" id="actual" required placeholder="********" minlength="8" maxlength="16">
-	        Contraseña nueva: <input type="password" name="contrasena1" id="contrasena1" required placeholder="********" minlength="8" maxlength="16">
-	        Repetir contraseña: <input type="password" name="contrasena2" id="contrasena2" required placeholder="********" minlength="8" maxlength="16">
-	        
-	        
-	        <input type="submit" value="Cambiar Contraseña">
+		<div class="columns">
+			<form method="POST" id="cambiaContrasena" action="">
+					{% csrf_token %}
+					<div class="form-group">
+						<label>Contraseña Actual: </label>
+	        			<input type="password" name="actual" id="actual" required placeholder="********" minlength="8" maxlength="16" class="form-control">
+	        		</div>
+	        		<div class="form-row">
+  						<div class="form-group col-md-6">
+	        				<label>Contraseña Nueva</label><input type="password" name="contrasena1" id="contrasena1" required placeholder="********" minlength="8" maxlength="16" class="form-control">
+	        			</div>
+  						<div class="form-group col-md-6">
+	        				<label>Repita Contraseña</label><input type="password" name="contrasena2" id="contrasena2" required placeholder="********" minlength="8" maxlength="16" class="form-control">
+	        			</div>
+	        		</div>
+	        <br>
+	      <button type="submit" class="btn btn-success" value="Cambiar Contraseña">Cambiar Contraseña</button>
 	 </form>
 	  </div>
 	  	</section>

@@ -15,9 +15,11 @@
 
 	 <form method="POST" id="recuperaContrasena1" action="">
 	        {% csrf_token %}
-	        <label>Rut:</label>
-	        <input type="text" id="rut" name="rut" required placeholder="123456784">
-	        <input type="submit" value="Enviar correo">
+  				
+	        		<label>Rut:</label>
+	        		<input type="text" id="rut" name="rut" required placeholder="123456784" class="form-control" style="width: 50%;"><br>
+	        	
+	        <button type="submit" class="btn btn-primary" value="Enviar Correo">Enviar correo</button>
 	 </form>
 	  </div>
 	  </div>
