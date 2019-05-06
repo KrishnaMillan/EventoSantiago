@@ -27,7 +27,7 @@ def registrarse(request):
 		fecha_registro=time.strftime("%Y-%m-%d")
 		try:
 			user=User.objects.get(username=rut)
-			mensaje="Este rut ya está registrado"
+			mensaje="Este rut ya está registrado, ingrese los datos nuevamente"
 		except:
 			if contrasena==contrasena2:
 				

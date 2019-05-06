@@ -9,12 +9,17 @@
   </section>
 {% endblock%}
 {% block informacion %}
-{% ifequal mensaje 'Desactivada' %}
-  <script type="text/javascript" >alert("Tu cuenta se ha desactivado correctamente, para volver a activarla inicia sesión")
-    </script>
+
+<section id="main-content">
+  
+  {% ifequal mensaje 'Desactivada' %}
+  <div class="alert alert-success" role="alert">
+  <h4 class="alert-heading">Cuenta Desactivada</h4>
+  <p>Tu cuenta se ha desactivado correctamente, para volver a activarla inicia sesión
   
 {% endifequal %}
-<section id="main-content">
+</div>
+
   <div class="text-intro">
     <h2>Nosotros</h2>
   </div>

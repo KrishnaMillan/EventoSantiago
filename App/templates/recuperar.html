@@ -1,15 +1,25 @@
 {% extends 'maqueta.html' %}
 {% load staticfiles %}
 {% block informacion %}	
-{% ifnotequal mensaje '' %}
-	<script type="text/javascript" >alert("{{mensaje}}")
-    </script>
-{% endifnotequal %}
+
 	<section id="home-head" class="work">
 	</section>
 	<section id="main-content">
 	  <div class="text-intro">
 	    <h2>Recuperar Contraseña</h2>
+	    {% ifnotequal mensaje '' %}
+	    {% ifequal mensaje "No se encuentra el rut"%}
+			<div class="alert alert-danger" role="alert" style="text-align: center;">
+			 {{mensaje}}
+			</div>
+			{%else%}
+				    <div class="alert alert-success" role="alert" style="text-align: center;">
+			 {{mensaje}}
+			</div>
+
+	    {%endifequal%}
+
+{% endifnotequal %}
 	  </div>
 	  <div class="columns">
 

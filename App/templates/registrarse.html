@@ -2,11 +2,7 @@
 {% load staticfiles %}
 
 {% block informacion %}
-{% ifnotequal mensaje '' %}
-	<script type="text/javascript" >alert("{{mensaje}}")
-    </script>
 
-{% endifnotequal %}
 	<section id="home-head" class="work">
 	</section>
 	<section id="main-content">
@@ -18,9 +14,27 @@
 	  		<form method="POST" id="registraPersona" action="">
 	    	{% csrf_token %}
     			<div class="form-group">
+            <label for="inputerut" style="width:100%; text-align: center;">
+              {% ifnotequal mensaje '' %}
+                  {% ifequal mensaje 'Usuario agregado correctamente'%}
+                  <div class="alert alert-success" role="alert">
+                    {{mensaje}}
+                  </div>
+                  {% else %}
+                  <div class="alert alert-danger" role="alert">
+                    {{mensaje}}
+                  </div>
+                  {% endifequal%}
+              {% endifnotequal %}
+            </label><br>
+
       				<label for="inputerut">Rut</label>
+
+
       				<input type="text" id="rut" name="rut" class="form-control" required placeholder="123456784">
+
 	  				<small id="ruthelp" class="form-text text-muted">Ingrese rut sin puntos, ni guión</small>
+
     			</div>
   				
   				<div class="form-row">
@@ -41,7 +55,7 @@
     				</div>
     				<div class="form-group col-md-6">
     					<label for="inputcomuna">Comuna</label>
-    					<select name="comuna" class="form-control">
+    					<select id="comuna" name="comuna" class="form-control">
 	        				<option value="Santiago">Santiago</option><option value="Cerrillos">Cerrillos</option>
   							<option value="Cerro Navia">Cerro Navia</option><option value="Conchali">Conchalí</option>
   							<option value="El Bosque">El Bosque</option><option value="Estación Central">Estación Central</option>
@@ -74,14 +88,14 @@
   				<div class="form-row">
     				<div class="form-group col-md-6">
       					<label for="inputcontra">Contraseña</label>
-      					<input type="password" id="contrasena2" name="contrasena2" class="form-control" required placeholder="********" minlength="8" maxlength="16">
+      					<input type="password" id="contrasena" name="contrasena" class="form-control" required placeholder="********" minlength="8" maxlength="16">
    					</div>
     				<div class="form-group col-md-6">
       					<label for="inputcontra2">Repita Contraseña</label>
       					<input type="password" id="contrasena2" name="contrasena2" class="form-control" required placeholder="********" minlength="8" maxlength="16">
     				</div>
   				</div>
-  
+            
    				<button type="submit" class="btn btn-primary" value="Registrarse">Registrarse</button>
 			</form>
 			<h6><a href="#">Soy Empresa</a></h6>

@@ -221,8 +221,12 @@ footer .copyright a:hover {
 	width: 100%;
 	text-align: justify;
   	padding-left: 25%; 
-  	padding-right: 25%;"
+  	padding-right: 25%;
 }
+#recuperaContrasena2 .form-group{
+	text-align:  center;
+}
+
 
 @media handheld and (max-width:480px), screen and (max-device-width:480px), screen and (max-width:767px) {
 body {
@@ -265,11 +269,11 @@ header .main-nav ul li a {
 header .main-nav ul li a:hover{
 	background:gray;
 }
-
+/* LOGIN RESPONSIVE */
 #iniciaSesion{
 	padding: 0;
 	min-height: 40px;
-	font-size: 25px;
+	font-size: 30px;
 	text-align: center;
 	
 }
@@ -279,18 +283,44 @@ header .main-nav ul li a:hover{
 	text-align: center;
 	
 }
-#iniciaSesion .btn{
 
-	min-height: 15%;
-	width: 20%;
+/* REGISTRARSE RESPONSIVE */
+.form-control{
+	text-align: center;
+	min-height: 60px;
 	
 }
 
-
+.form-group.col-md-6{
+	min-width: 100%;
+	text-align: center;
+	
+}
+#comuna{
+	text-align-last: center;
+}
+.btn{
+	min-width: 40%;
+	min-height: 60px;
+}
+/* TABLAS DE ACTUALIZAR, VER DATOS, TODAS LAS TABLAS */
+table.table.table-striped td{
+	min-width: 90%;
+	display: grid;
+	text-align: center;
+}
+.form-group.col-md-4{
+min-height: 60%;
+	min-width: 100%;
+}
+input{
+	min-width: 100%;
+}
 div.columns {
 	width:100%;
+	align-items: center;
 	text-align: center;
-	font-size: 20px;
+	font-size: 30px;
 
 }
 div.one-half, div.one-third, div.two-third, div.three-fourth, div.one-fourth {

@@ -1,10 +1,7 @@
 {% extends 'maqueta.html' %}
 {% load staticfiles %}
 {% block informacion %}	
-{% ifnotequal mensaje '' %}
-	<script type="text/javascript" >alert("{{mensaje}}")
-    </script>
-{% endifnotequal %}
+
 	<section id="home-head" class="work">
 	</section>
 	<section id="main-content">
@@ -12,12 +9,21 @@
 	    <h2>Iniciar Sesión</h2>
 	  </div>
 	  <div class="columns">
+
+
 	  	<div id="iniciaSesion">
+
 	 <form method="POST" action="">
 	        {% csrf_token %}
 	        {{ form.as_p }}
+	        {% ifnotequal mensaje '' %}
+			<div class="alert alert-danger" role="alert" style="text-align: center;">
+				 {{mensaje}}
+			</div>
+			{% endifnotequal %}
 	      	<center><button type="	submit" value="Iniciar Sesión" class="btn btn-primary">Iniciar Sesión</button></center>
 	 </form><br>
+
 	 <center><a href="{% url 'recuperar' %}" >¿Olvidaste tu contraseña?</a></center><br>
 	 <center><p>¿No tienes una cuenta? <a href="{% url 'registrarse' %}"> Regístrate</a></p></center>
 

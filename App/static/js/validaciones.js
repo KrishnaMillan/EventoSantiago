@@ -172,8 +172,8 @@ $("#cambiaContrasena").submit(function() {
 				alert("Las contraseñas no coinciden!");
 				return false;
 			}else{
-				return true;
-			}
+			return true;
+					}
 
 		}
 	});
