@@ -72,7 +72,7 @@ def ingresar(request):
 				registro=RegistroEmail(Cuenta=cuenta, iduuid=iduuid)
 				registro.save()
 				mensaje="Tu cuenta está inactiva, se envió un link a tu correo electrónico para reactivarla"
-				send_mail('Reactiva tu cuenta','','eventosantiago7@gmail.com',[correo],html_message='Este email fue enviado porque tu cuenta está inactiva e intentaste iniciar sesión <br><a href="http://127.0.0.1:8000/reactivar?iduuid='+iduuid+'&user='+users.username+'">Click aquí para reactivar tu cuenta</a><br>si no fuiste tu ignora este email')	
+				send_mail('Reactiva tu cuenta','','eventosantiago7@gmail.com',[correo],html_message='Este email fue enviado porque tu cuenta está inactiva e intentaste iniciar sesión <br><a href="http://krishnamillan.pythonanywhere.com/reactivar?iduuid='+iduuid+'&user='+users.username+'">Click aquí para reactivar tu cuenta</a><br>si no fuiste tu ignora este email')	
 				
 	except:
 		mensaje="No se ha encontrado el usuario"
@@ -128,7 +128,7 @@ def recuperar(request):
 		try:
 			cuenta=Cuenta.objects.get(rut=rut)
 			correo=cuenta.correoAsociado
-			send_mail('Recuperar Contraseña','','eventosantiago7@gmail.com',[correo],html_message='Este email fue enviado porque solicitaste recuperar tu contraseña<br><a href="http://127.0.0.1:8000/recuperarcontrasena?iduuid='+iduuid+'&user='+rut+'">Click aquí para recuperar contraseña</a><br>si no fuiste tu ignora este email')
+			send_mail('Recuperar Contraseña','','eventosantiago7@gmail.com',[correo],html_message='Este email fue enviado porque solicitaste recuperar tu contraseña<br><a href="http://krishnamillan.pythonanywhere.com/recuperarcontrasena?iduuid='+iduuid+'&user='+rut+'">Click aquí para recuperar contraseña</a><br>si no fuiste tu ignora este email')
 			mensaje="Se ha enviado un correo a su mail asociado"
 			registro=RegistroEmail(Cuenta=cuenta, iduuid=iduuid)
 			registro.save()
