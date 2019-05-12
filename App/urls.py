@@ -13,4 +13,8 @@ urlpatterns=[
     path('recuperarcontrasena',views.recuperarcontrasena, name="recuperarcontrasena"),
     path('cambiarcontrasena',views.cambiarcontrasena, name="cambiarcontrasena"),
     path('reactivar',views.reactivar, name="reactivar"),
+    path('registroEmpresa',views.registroEmpresa, name="registroEmpresa"),
+    path('solicitudEmpresas',views.solicitudEmpresas, name="solicitudEmpresas"),
+    path('detalleEmpresa',views.detalleEmpresa, name="detalleEmpresa"),
+    path('creaAdmin',views.creaAdmin, name="creaAdmin"),
 ]

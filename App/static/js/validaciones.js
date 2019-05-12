@@ -234,5 +234,42 @@ $("#eliminaCuenta").submit(function() {
 
 	});
 
+//RegistraEmpresa
+$("#registraEmpresa").submit(function() {
+		error_message="";
+		error_rut=false;
+		error_contrasena=false;
+		check_rut();
+		check_contrasenasIguales();
+		var nom=$("#nombre").val();
+		nom=$.trim(nom);
+		$("#nombre").val(nom);
+
+		var direccion=$("#direccion").val();
+		direccion=$.trim(direccion);
+		$("#direccion").val(direccion);
+		
+		if(error_rut==false && error_contrasena==false && nom!="" && direccion!=""){
+				$("#registraEmpresa").submit();
+		}
+		else{
+			if(nom==""){
+				alert("No se puede usar solo espacios en el nombre");
+				return false;
+			}
+			if(direccion==""){
+				alert("No se puede usar solo espacios en la direccion");
+				return false;
+			}else{
+				alert(error_message.toLowerCase());
+				return false;	
+			}			
+			
+		}
+
+	});
+
+
+
 
 });

@@ -17,10 +17,25 @@
       <li>
         <ul>
           <li><a href="{% url 'index'%}" >Inicio</a></li>
-          <li><a href="#">Eventos</a></li>
+          
            {% if user.is_authenticated %}
               {% if 'Usuarios' ==  request.user.groups.all.0.name %} 
               <li><a href="{% url 'micuenta'%}">Mi cuenta</a></li>
+              <li><a href="#">Eventos</a></li>
+                <li><a href="{% url 'salir'%}">Salir</a></li>
+              {%endif%}
+              {% if 'Empresas' ==  request.user.groups.all.0.name %} 
+              <li><a href="#">Mis Eventos</a></li>
+              <li><a href="{% url 'micuenta'%}">Mi cuenta</a></li>
+                <li><a href="{% url 'salir'%}">Salir</a></li>
+              {%endif%}
+              {% if 'Administradores' ==  request.user.groups.all.0.name %} 
+              <li><a href="{% url 'solicitudEmpresas' %}">Solicitudes</a></li>
+              <li><a href="{% url 'micuenta'%}">Mi cuenta</a></li>
+                <li><a href="{% url 'salir'%}">Salir</a></li>
+              {%endif%}
+              {% if 'administrador' ==  user.get_username %} 
+              <li><a href="{% url 'creaAdmin' %}">Crear Administrador</a></li>
                 <li><a href="{% url 'salir'%}">Salir</a></li>
               {%endif%}
               {% else %}

@@ -2,9 +2,10 @@ from django.shortcuts import render, render_to_response, redirect
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from .forms import Login
-from .models import Cuenta, Usuario, RegistroEmail
+from .models import Cuenta, Usuario, RegistroEmail, Empresa, Administrador, Evento, Reserva, Visita
 import datetime, time
 import uuid
+from datetime import timedelta, date
 from django.contrib.auth.models  import Group, User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -67,12 +68,14 @@ def ingresar(request):
 
 			else:
 				mensaje="Tu usuario o contraseña es incorrecta, intenta nuevamente!!"
-			if users.is_active==False:
+			if users.is_active==False and User.objects.filter(username=data.get("rut"), groups__name='Usuarios').exists():
 				iduuid=str(uuid.uuid4())
 				registro=RegistroEmail(Cuenta=cuenta, iduuid=iduuid)
 				registro.save()
 				mensaje="Tu cuenta está inactiva, se envió un link a tu correo electrónico para reactivarla"
 				send_mail('Reactiva tu cuenta','','eventosantiago7@gmail.com',[correo],html_message='Este email fue enviado porque tu cuenta está inactiva e intentaste iniciar sesión <br><a href="http://krishnamillan.pythonanywhere.com/reactivar?iduuid='+iduuid+'&user='+users.username+'">Click aquí para reactivar tu cuenta</a><br>si no fuiste tu ignora este email')	
+			if users.is_active==False and User.objects.filter(username=data.get("rut"), groups__name='Empresas').exists():
+				mensaje="Tu cuenta de empresa, aún no ha sido activada"
 				
 	except:
 		mensaje="No se ha encontrado el usuario"
@@ -85,7 +88,12 @@ def salir(request):
 
 @login_required(login_url='ingresar')
 def micuenta(request):
-	usuario=Usuario.objects.filter(Cuenta=(Cuenta.objects.get(rut=request.user.get_username())))
+	if User.objects.filter(username=request.user.get_username(), groups__name='Usuarios').exists():
+		usuario=Usuario.objects.filter(Cuenta=(Cuenta.objects.get(rut=request.user.get_username())))
+	if User.objects.filter(username=request.user.get_username(), groups__name='Empresas').exists():
+		usuario=Empresa.objects.filter(Cuenta=(Cuenta.objects.get(rut=request.user.get_username())))
+	if User.objects.filter(username=request.user.get_username(), groups__name='Administradores').exists():
+		usuario=Administrador.objects.filter(Cuenta=(Cuenta.objects.get(rut=request.user.get_username())))
 	return render(request,"micuenta.html",{'usuario':usuario})
 @login_required(login_url='ingresar')
 def eliminar(request):
@@ -126,12 +134,15 @@ def recuperar(request):
 	if request.POST:
 		rut=request.POST.get("rut")
 		try:
-			cuenta=Cuenta.objects.get(rut=rut)
-			correo=cuenta.correoAsociado
-			send_mail('Recuperar Contraseña','','eventosantiago7@gmail.com',[correo],html_message='Este email fue enviado porque solicitaste recuperar tu contraseña<br><a href="http://krishnamillan.pythonanywhere.com/recuperarcontrasena?iduuid='+iduuid+'&user='+rut+'">Click aquí para recuperar contraseña</a><br>si no fuiste tu ignora este email')
-			mensaje="Se ha enviado un correo a su mail asociado"
-			registro=RegistroEmail(Cuenta=cuenta, iduuid=iduuid)
-			registro.save()
+			if User.objects.filter(username=rut, groups__name='Usuarios').exists():
+				cuenta=Cuenta.objects.get(rut=rut)
+				correo=cuenta.correoAsociado
+				send_mail('Recuperar Contraseña','','eventosantiago7@gmail.com',[correo],html_message='Este email fue enviado porque solicitaste recuperar tu contraseña<br><a href="http://krishnamillan.pythonanywhere.com/recuperarcontrasena?iduuid='+iduuid+'&user='+rut+'">Click aquí para recuperar contraseña</a><br>si no fuiste tu ignora este email')
+				mensaje="Se ha enviado un correo a su mail asociado"
+				registro=RegistroEmail(Cuenta=cuenta, iduuid=iduuid)
+				registro.save()
+			else:
+				mensaje="Tu cuenta es una cuenta de empresa, si necesitas recuperar tu contraseña, ponte en contacto con el administrador"
 		except Cuenta.DoesNotExist:
 			mensaje="No se encuentra el rut"
 	return render(request,"recuperar.html",{'mensaje':mensaje})
@@ -140,19 +151,22 @@ def recuperarcontrasena(request):
 	existe=True
 	mensaje=""
 	try:
-		cuenta=Cuenta.objects.get(rut=request.GET.get("user"))
-		registro=RegistroEmail.objects.get(Cuenta=cuenta, iduuid=request.GET.get("iduuid"))
-		if request.POST:
-			contrasena=request.POST.get("contrasena1")
-			contrasena2=request.POST.get("contrasena2")
-			if contrasena==contrasena2:
-				usuario=User.objects.get(username=request.GET.get("user"))
-				usuario.set_password(contrasena)
-				usuario.save()
-				mensaje="Contraseña actualizada correctamente"
-				registro.delete()
-			else:
-				mensaje="Las contraseñas no coinciden"
+		if User.objects.filter(username=request.GET.get("user"), groups__name='Usuarios').exists():
+			cuenta=Cuenta.objects.get(rut=request.GET.get("user"))
+			registro=RegistroEmail.objects.get(Cuenta=cuenta, iduuid=request.GET.get("iduuid"))
+			if request.POST:
+				contrasena=request.POST.get("contrasena1")
+				contrasena2=request.POST.get("contrasena2")
+				if contrasena==contrasena2:
+					usuario=User.objects.get(username=request.GET.get("user"))
+					usuario.set_password(contrasena)
+					usuario.save()
+					mensaje="Contraseña actualizada correctamente"
+					registro.delete()
+				else:
+					mensaje="Las contraseñas no coinciden"
+		else:
+			mensaje="Tu cuenta es una cuenta de empresa"
 	except:
 		existe=False
 	return render(request,"recuperarcontrasena.html",{'mensaje':mensaje, 'existe':existe})
@@ -181,12 +195,15 @@ def cambiarcontrasena(request):
 def reactivar(request):
 	existe=True
 	try:
-		cuenta=Cuenta.objects.get(rut=request.GET.get("user"))
-		registro=RegistroEmail.objects.get(Cuenta=cuenta, iduuid=request.GET.get("iduuid"))
-		usuario=User.objects.get(username=request.GET.get("user"))
-		usuario.is_active=True
-		usuario.save()
-		registro.delete()
+		if User.objects.filter(username=request.GET.get("user"), groups__name='Usuarios').exists():
+			cuenta=Cuenta.objects.get(rut=request.GET.get("user"))
+			registro=RegistroEmail.objects.get(Cuenta=cuenta, iduuid=request.GET.get("iduuid"))
+			usuario=User.objects.get(username=request.GET.get("user"))
+			usuario.is_active=True
+			usuario.save()
+			registro.delete()
+		else:
+			existe=False
 	except:
 		existe=False
 
@@ -194,3 +211,119 @@ def reactivar(request):
 	return render(request,"reactivar.html",{'existe':existe})
 
 
+#
+def registroEmpresa(request):
+	mensaje=""
+	if request.POST:
+		nombre=request.POST.get("nombre")
+		rut=request.POST.get("rut")
+		contrasena=request.POST.get("contrasena")
+		contrasena2=request.POST.get("contrasena2")
+		correoAsociado=request.POST.get("correoAsociado")
+		comuna=request.POST.get("comuna")
+		direccion=request.POST.get("direccion")
+		fecha_registro=time.strftime("%Y-%m-%d")
+		try:
+			user=User.objects.get(username=rut)
+			mensaje="Este rut ya está registrado, ingrese los datos nuevamente"
+		except:
+			if contrasena==contrasena2:
+				
+				user=User.objects.create_user(username=rut,password=contrasena,is_active=False)
+				user.save()
+				cuenta=Cuenta(rut=rut, nombre=nombre, correoAsociado=correoAsociado, user=user, comuna=comuna, fecha_registro=fecha_registro)
+				cuenta.save()
+				empresa=Empresa(Cuenta=cuenta, direccion=direccion)
+				empresa.save()
+				mensaje="Solicitud enviada correctamente"
+				try:
+					user.groups.add(Group.objects.get(name="Empresas"))
+				except Group.DoesNotExist:
+					Group.objects.create(name="Empresas")
+					user.groups.add(Group.objects.get(name="Empresas"))
+			else: 
+				mensaje="Las contraseñas no coinciden"
+			
+
+	return render(request, "registroempresa.html",{'mensaje':mensaje})
+
+@login_required(login_url='ingresar')
+def creaAdmin(request):
+	mensaje=""
+	if request.POST:
+		nombre=request.POST.get("nombre")
+		rut=request.POST.get("rut")
+		contrasena=request.POST.get("contrasena")
+		contrasena2=request.POST.get("contrasena2")
+		correoAsociado=request.POST.get("correoAsociado")
+		comuna=request.POST.get("comuna")
+		fec_nac=request.POST.get("fec_nac")
+		fec_ingreso=request.POST.get("fec_ingreso")
+		fecha_registro=time.strftime("%Y-%m-%d")
+		try:
+			user=User.objects.get(username=rut)
+			mensaje="Este rut ya está registrado, ingrese los datos nuevamente"
+		except:
+			if contrasena==contrasena2:
+				
+				user=User.objects.create_user(username=rut,password=contrasena,is_active=True)
+				user.save()
+				cuenta=Cuenta(rut=rut, nombre=nombre, correoAsociado=correoAsociado, user=user, comuna=comuna, fecha_registro=fecha_registro)
+				cuenta.save()
+				administrador=Administrador(Cuenta=cuenta, fec_nac=fec_nac, fec_ingreso=fec_ingreso)
+				administrador.save()
+				mensaje="Administrador agregado correctamente"
+				try:
+					user.groups.add(Group.objects.get(name="Administradores"))
+				except Group.DoesNotExist:
+					Group.objects.create(name="Administradores")
+					user.groups.add(Group.objects.get(name="Administradores"))
+			else: 
+				mensaje="Las contraseñas no coinciden"
+	return render(request,"creaadmin.html",{'mensaje':mensaje})
+
+@login_required(login_url='ingresar')
+def solicitudEmpresas(request):
+	cuentas=Cuenta.objects.filter(user__in=User.objects.filter(groups__name='Empresas', is_active=False))
+	return render(request,"solicitudempresas.html",{'cuentas':cuentas})
+
+@login_required(login_url='ingresar')
+def detalleEmpresa(request):
+	
+	
+	cuenta=Cuenta.objects.get(rut=request.GET.get("rut"))
+
+	mensaje=""
+	visitas="No tiene visitas agendadas"
+	existe=False
+	
+	if(Visita.objects.filter(Empresa=(Empresa.objects.get(Cuenta=cuenta))).exists()):
+		visita=Visita.objects.get(Empresa=(Empresa.objects.get(Cuenta=cuenta)))
+		visitas=visita.fecha_visita
+		existe=True
+	else:
+		if request.POST.get("agendarVisita") is not None:
+			rut=request.POST.get("rut")
+			fecha_visita= datetime.date.today() + timedelta(days=1)
+			visita=Visita(fecha_visita=fecha_visita,Empresa=Empresa.objects.get(Cuenta=cuenta), Administrador=Administrador.objects.get(Cuenta=Cuenta.objects.get(rut=request.user.get_username())))
+			visita.save()
+			mensaje="Visita guardada correctamente"
+	if request.POST.get("activar") is not None and existe:
+		rut=request.POST.get("rut")
+		user=User.objects.get(username=rut)
+		
+		if Visita.objects.filter(Empresa=(Empresa.objects.get(Cuenta=cuenta)), Administrador=Administrador.objects.get(Cuenta=Cuenta.objects.get(rut=request.user.get_username()))).exists():
+			resolucion=request.POST.get("resolucion")
+			fec_activacion=datetime.date.today()
+			Empresa.objects.filter(Cuenta=cuenta).update(fec_activacion=fec_activacion)
+			Visita.objects.filter(Empresa=Empresa.objects.get(Cuenta=cuenta), Administrador=(Administrador.objects.get(Cuenta=(Cuenta.objects.get(rut=request.user.get_username()))))).update(resolucion=resolucion)
+		
+			
+			user.is_active=True
+			user.save()
+			mensaje="Cuenta activada correctamente"
+		
+		
+	
+
+	return render(request,"detalleempresa.html",{'existe':existe,'cuenta':cuenta,'mensaje':mensaje, 'visitas':visitas})

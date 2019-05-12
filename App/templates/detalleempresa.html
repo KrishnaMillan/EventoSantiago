@@ -1,0 +1,46 @@
+{% extends 'maqueta.html' %}
+{% load staticfiles %}
+{% block informacion %}	
+	<section id="home-head" class="work">
+	</section>
+	<section id="main-content">
+	  <div class="text-intro">
+	    <h2>Activa cuentas</h2>
+	    {% ifnotequal mensaje '' %}
+			<div class="alert alert-danger" role="alert" style="text-align: center;">
+			 {{mensaje}}
+			</div>
+
+	    {%endifnotequal%}
+	  </div>
+	  
+	
+	 	 			
+	 			Rut {{cuenta.rut}}<br>
+	 			Nombre {{cuenta.nombre}}<br>
+	 			Fecha Registro {{cuenta.fecha_registro}}<br>
+	 			Tiene visita{{visitas}}<br>
+	 			{% if existe%}
+				<form method="POST">
+	 			{% csrf_token %}
+	 			Resolucion<input type="text" name="resolucion" id="idresolucion" required>
+	 			<input type="hidden" name="rut" id="rut" value="{{cuenta.rut}}">
+	 			<input type="submit" name="activar" value="Activar/Aprobar Cuenta">
+	 			<br>
+	 			</form>
+	 			{%else %}
+	 			<form method="POST">
+	 			{% csrf_token %}
+
+	 			<input type="hidden" name="rut" id="rut" value="{{c.rut}}">
+	 			<input type="submit" name="agendarVisita" value="Agendar Visita">
+	 			<br>
+	 			</form>
+	 			{%endif%}
+
+	  
+	 
+	 
+	</section>
+
+{% endblock %}

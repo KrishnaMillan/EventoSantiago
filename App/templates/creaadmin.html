@@ -7,7 +7,10 @@
 	</section>
 	<section id="main-content">
 		<div class="text-intro">
-			<h2>Registrate</h2>
+			<h2>Registra un administrador</h2>
+			<div class="alert alert-success" role="alert">
+              <p>Ejecutivos encargados de validar las cuentas de empresas y resolver sus inquetudes</p>
+            </div>
 	  	</div>
 	  	<div class="columns">
 
@@ -16,7 +19,7 @@
     			<div class="form-group">
             <label for="inputerut" style="width:100%; text-align: center;">
               {% ifnotequal mensaje '' %}
-                  {% ifequal mensaje 'Usuario agregado correctamente'%}
+                  {% ifequal mensaje 'Administrador agregado correctamente'%}
                   <div class="alert alert-success" role="alert">
                     {{mensaje}}
                   </div>
@@ -95,10 +98,15 @@
       					<input type="password" id="contrasena2" name="contrasena2" class="form-control" required placeholder="********" minlength="8" maxlength="16">
     				</div>
   				</div>
-            
-   				<button type="submit" class="btn btn-primary" value="Registrarse">Registrarse</button>
+  				<div class="form-row">
+  				<div class="form-group col-md-6">
+      					<label for="inputfech">Fecha de contratación</label>
+      					<input type="date" id="fec_ingreso" name="fec_ingreso" class="form-control" required min="1900-01-01">
+	 		 			
+    				</div>
+            </div>
+   				<button type="submit" class="btn btn-primary" value="Registrarse">Registrar Administrador</button>
 			</form>
-			<h6><a href="{% url 'registroEmpresa' %}">Soy Empresa</a></h6>
 		</div>
 	</section>
 	<script  src="{%static 'js/validaciones.js'%}"></script>

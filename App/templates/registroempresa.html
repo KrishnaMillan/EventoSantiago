@@ -7,18 +7,21 @@
 	</section>
 	<section id="main-content">
 		<div class="text-intro">
-			<h2>Registrate</h2>
+			<h2>Registra tu empresa</h2>
+       <div class="alert alert-danger" role="alert">
+            Según sus datos, un ejecutivo visitará su dirección. Por favor, especifique datos fidedignos
+      </div>
 	  	</div>
 	  	<div class="columns">
 
-	  		<form method="POST" id="registraPersona" action="">
+	  		<form method="POST" id="registraEmpresa" action="">
 	    	{% csrf_token %}
     			<div class="form-group">
             <label for="inputerut" style="width:100%; text-align: center;">
               {% ifnotequal mensaje '' %}
-                  {% ifequal mensaje 'Usuario agregado correctamente'%}
+                  {% ifequal mensaje 'Solicitud enviada correctamente'%}
                   <div class="alert alert-success" role="alert">
-                    {{mensaje}}
+                    {{mensaje}} <p>Un administrador visitará su dirección para validar sus datos</p>
                   </div>
                   {% else %}
                   <div class="alert alert-danger" role="alert">
@@ -33,24 +36,20 @@
 
       				<input type="text" id="rut" name="rut" class="form-control" required placeholder="123456784">
 
-	  				<small id="ruthelp" class="form-text text-muted">Ingrese rut sin puntos, ni guión</small>
+	  				<small id="ruthelp" class="form-text text-muted">Ingrese rut de la empresa</small>
 
     			</div>
   				
   				<div class="form-row">
   					<div class="form-group col-md-6">
-      					<label for="inputnombre">Nombre</label>
+      					<label for="inputnombre">Nombre Empresa</label>
       					<input name="nombre" id="nombre" required placeholder="Alguien" class="form-control" minlength="3" maxlength="150"  type="text" >
     				</div>
-    				<div class="form-group col-md-6">
-      					<label for="inputfech">Fecha de nacimiento</label>
-      					<input type="date" id="fec_nac" name="fec_nac" class="form-control" required max="2003-12-31" min="1900-01-01">
-	 		 			<small id="fechelp" class="form-text text-muted">Debe ser mayor de 15 años</small>
-    				</div>
+    				
   				</div>
    				<div class="form-row">
    					<div class="form-group col-md-6">
-      					<label for="inputemail">Correo Electrónico</label>
+      					<label for="inputemail">Correo Electrónico Asociado</label>
       					<input type="email" id="correoAsociado" name="correoAsociado" class="form-control" required placeholder="alguien@gmail.com">
     				</div>
     				<div class="form-group col-md-6">
@@ -85,7 +84,14 @@
   						</select><br>
   					</div>
   				</div>
+
   				<div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="inputdireccion">Direccion</label>
+                <input type="text" id="direccion" name="direccion" class="form-control" required>
+            </div>
+          </div>
+          <div class="form-row">
     				<div class="form-group col-md-6">
       					<label for="inputcontra">Contraseña</label>
       					<input type="password" id="contrasena" name="contrasena" class="form-control" required placeholder="********" minlength="8" maxlength="16">
@@ -94,11 +100,12 @@
       					<label for="inputcontra2">Repita Contraseña</label>
       					<input type="password" id="contrasena2" name="contrasena2" class="form-control" required placeholder="********" minlength="8" maxlength="16">
     				</div>
+
+            
   				</div>
             
-   				<button type="submit" class="btn btn-primary" value="Registrarse">Registrarse</button>
+   				<button type="submit" class="btn btn-primary" value="Registrarse">Solicitar Registro</button>
 			</form>
-			<h6><a href="{% url 'registroEmpresa' %}">Soy Empresa</a></h6>
 		</div>
 	</section>
 	<script  src="{%static 'js/validaciones.js'%}"></script>

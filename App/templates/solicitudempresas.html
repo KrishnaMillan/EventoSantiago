@@ -1,0 +1,29 @@
+{% extends 'maqueta.html' %}
+{% load staticfiles %}
+{% block informacion %}	
+	<section id="home-head" class="work">
+	</section>
+	<section id="main-content">
+	  <div class="text-intro">
+	    <h2>Listado de empresas no activas</h2>
+	  </div>
+	  
+
+	 	 {%for c in cuentas %}
+	 		<form method="GET" action="{% url 'detalleEmpresa'%}">
+	 			Nombre {{c.nombre}}<br>
+	 			Fecha Registro{{c.fecha_registro}}<br>
+	 			Comuna{{c.comuna}}<br>
+	 			
+	 			<input type="hidden" name="rut" id="rut" value="{{c.rut}}">
+	 			<input type="submit" name="VerDetalles" value="Ver Detalles">
+	 			 </form>
+	 			<br>
+	
+	 {% endfor%}
+	 
+	 
+	 
+	</section>
+
+{% endblock %}
