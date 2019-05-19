@@ -36,6 +36,7 @@
               {%endif%}
               {% if 'administrador' ==  user.get_username %} 
               <li><a href="{% url 'creaAdmin' %}">Crear Administrador</a></li>
+              <li><a href="{% url 'eliminaAdmin' %}">Eliminar Administrador</a></li>
                 <li><a href="{% url 'salir'%}">Salir</a></li>
               {%endif%}
               {% else %}

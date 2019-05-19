@@ -10,7 +10,7 @@ $(function(){
 	//solo letras en nombre
 	$("#rut").keypress(function soloNumeros(e){
   var key = window.event ? e.which : e.keyCode;
-  if (key < 48 || key > 57) {
+  if (key < 48 || key > 57 && key != 75 && key!= 107) {
     e.preventDefault();
   }
 });
@@ -231,9 +231,18 @@ $("#recuperaContrasena2").submit(function() {
 	});
 
 
-//Eliminar cuenta
+//Eliminar cuenta usuarios
 $("#eliminaCuenta").submit(function() {
 		if (confirm("Todas sus reservas van a eliminarse")){
+			return true;
+		}
+		else{
+			return false;
+		}
+
+	});
+$("#eliminaCuentaEmpresa").submit(function() {
+		if (confirm("Todos sus eventos van a eliminarse")){
 			return true;
 		}
 		else{

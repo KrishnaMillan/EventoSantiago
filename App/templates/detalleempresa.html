@@ -46,7 +46,9 @@
 			 			{% if existe%}
 								<form method="POST" id="guardaResolucion">
 					 			{% csrf_token %}
-					 			Resolucion<input type="text" name="resolucion" id="resolucion" required>
+					 			<tr>
+					 			 <td>Resolucion<input type="text" class="form-control" name="resolucion" id="resolucion" required><td>	
+					 			</tr>
 					 			<input type="hidden" name="rut" id="rut" value="{{cuenta.rut}}">
 					 			<tr>
 					 				<td>

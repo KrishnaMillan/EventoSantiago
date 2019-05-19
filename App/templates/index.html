@@ -15,9 +15,18 @@
   {% ifequal mensaje 'Desactivada' %}
   <div class="alert alert-success" role="alert">
   <h4 class="alert-heading">Cuenta Desactivada</h4>
-  <p>Tu cuenta se ha desactivado correctamente, para volver a activarla inicia sesión
+  <p>Tu cuenta se ha desactivado correctamente, para volver a activarla inicia sesión</p>
+</div>
   
 {% endifequal %}
+ {% ifequal mensaje 'Empresa Desactivada' %}
+  <div class="alert alert-success" role="alert">
+  <h4 class="alert-heading">Cuenta De Empresa Desactivada</h4>
+  <p>Tu cuenta se ha desactivado correctamente, para volver a activarla llama al +562 2 1234567</p>
+</div>
+  
+{% endifequal %}
+
 </div>
 
   <div class="text-intro">

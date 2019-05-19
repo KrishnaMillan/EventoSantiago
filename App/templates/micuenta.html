@@ -17,9 +17,11 @@
 			<tr>
 				<td class="font-weight-bold">Nombre:</td><td>{{u.Cuenta.nombre}}</td>
 			</tr>
+			{% if not 'Empresas' ==  request.user.groups.all.0.name %} 
 			<tr>
 				<td class="font-weight-bold">Fecha de nacimiento:</td> <td>{{u.fec_nac}}</td>
 			</tr>
+			{%endif%}
 			<tr>
 				<td class="font-weight-bold">Correo:</td><td>{{u.Cuenta.correoAsociado}}</td>
 			</tr>
@@ -29,9 +31,11 @@
 			<tr>
 				<td class="font-weight-bold">Fecha de registro:</td> <td>{{u.Cuenta.fecha_registro}}</td>
 			</tr>
+			
 		</table>
 		{% endfor %}
 		<div class="form-row">
+			{% if not 'Empresas' ==  request.user.groups.all.0.name %} 
 			<div class="form-group col-md-4">
 				<form action="{% url 'actualizar' %}" method="GET">
 					{% csrf_token %}
@@ -39,6 +43,9 @@
 					<button type="submit" class="btn btn-info" name="actualizar" value="Actualiza tus Datos">Actualiza tus Datos</button>
 				</form>
 			</div>
+			{%endif%}
+			 {% if 'Usuarios' ==  request.user.groups.all.0.name %} 
+			
 			<div class="form-group col-md-4">
 				<form action="{% url 'eliminar' %}" id="eliminaCuenta" method="GET">
     				{% csrf_token %}
@@ -46,6 +53,16 @@
    					<button type="submit" class="btn btn-danger" name="eliminar" value="Desactivar Cuenta">Desactivar Cuenta</button>
 				</form>
 			</div>
+			{%endif%}
+			{% if 'Empresas' ==  request.user.groups.all.0.name %} 
+			<div class="form-group col-md-4">
+				<form action="{% url 'eliminar' %}" id="eliminaCuentaEmpresa" method="GET">
+    				{% csrf_token %}
+    				{{ form.as_p }}
+   					<button type="submit" class="btn btn-danger" name="eliminar" value="Desactivar Cuenta">Desactivar Cuenta</button>
+				</form>
+			</div>
+			{%endif%}
 			<div class="form-group col-md-4">
 				<form action="{% url 'cambiarcontrasena' %}" method="GET">
     				{% csrf_token %}

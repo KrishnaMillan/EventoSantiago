@@ -17,4 +17,5 @@ urlpatterns=[
     path('solicitudEmpresas',views.solicitudEmpresas, name="solicitudEmpresas"),
     path('detalleEmpresa',views.detalleEmpresa, name="detalleEmpresa"),
     path('creaAdmin',views.creaAdmin, name="creaAdmin"),
+    path('eliminaAdmin',views.eliminaAdmin, name="eliminaAdmin"),
 ]

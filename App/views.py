@@ -100,7 +100,13 @@ def eliminar(request):
 	user=User.objects.get(username=request.user.get_username())
 	user.is_active=False
 	user.save()
-	mensaje="Desactivada"
+	if User.objects.filter(username=request.user.get_username(), groups__name='Usuarios').exists():
+		mensaje="Desactivada"
+	if User.objects.filter(username=request.user.get_username(), groups__name='Empresas').exists():
+		visita=Visita.objects.get(Empresa=(Empresa.objects.get(Cuenta=Cuenta.objects.get(rut=request.user.get_username()))))		
+		visita.resolucion="La cuenta fue desactivada el: "+ time.strftime("%Y-%m-%d")
+		visita.save()
+		mensaje="Empresa Desactivada"
 	logout(request)
 	return render(request,'index.html', {'mensaje':mensaje})
 @login_required(login_url='ingresar')
@@ -141,7 +147,7 @@ def recuperar(request):
 				mensaje="Se ha enviado un correo a su mail asociado"
 				registro=RegistroEmail(Cuenta=cuenta, iduuid=iduuid)
 				registro.save()
-			else:
+			if User.objects.filter(username=rut, groups__name='Empresas').exists():
 				mensaje="Tu cuenta es una cuenta de empresa, si necesitas recuperar tu contraseña, ponte en contacto con el administrador"
 		except Cuenta.DoesNotExist:
 			mensaje="No se encuentra el rut"
@@ -281,6 +287,24 @@ def creaAdmin(request):
 			else: 
 				mensaje="Las contraseñas no coinciden"
 	return render(request,"creaadmin.html",{'mensaje':mensaje})
+
+@login_required(login_url='ingresar')
+def eliminaAdmin(request):
+	usuario=User.objects.filter(groups__name='Administradores')
+	administradores=Cuenta.objects.filter(user__in=User.objects.filter(groups__name='Administradores'))
+	mensaje=""
+	if request.POST.get("activar") is not None:
+		user=User.objects.get(username=request.POST.get("rut"))
+		user.is_active=True
+		user.save()
+		mensaje="Cuenta activada correctamente"
+	if request.POST.get("eliminar") is not None:
+		user=User.objects.get(username=request.POST.get("rut"))
+		user.is_active=False
+		user.save()
+		mensaje="Cuenta desactivada correctamente"
+	return render(request,"eliminaadmin.html",{'mensaje':mensaje,'administradores':administradores, 'usuario':usuario})
+
 
 @login_required(login_url='ingresar')
 def solicitudEmpresas(request):
