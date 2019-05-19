@@ -211,7 +211,7 @@ def reactivar(request):
 	return render(request,"reactivar.html",{'existe':existe})
 
 
-#
+#Zona de empresa
 def registroEmpresa(request):
 	mensaje=""
 	if request.POST:
@@ -284,15 +284,16 @@ def creaAdmin(request):
 
 @login_required(login_url='ingresar')
 def solicitudEmpresas(request):
+	mensaje=""
 	cuentas=Cuenta.objects.filter(user__in=User.objects.filter(groups__name='Empresas', is_active=False))
-	return render(request,"solicitudempresas.html",{'cuentas':cuentas})
+	return render(request,"solicitudempresas.html",{'cuentas':cuentas,'mensaje':mensaje})
 
 @login_required(login_url='ingresar')
 def detalleEmpresa(request):
 	
-	
+	cuentas=Cuenta.objects.filter(user__in=User.objects.filter(groups__name='Empresas', is_active=False))
 	cuenta=Cuenta.objects.get(rut=request.GET.get("rut"))
-
+	resolucion=""
 	mensaje=""
 	visitas="No tiene visitas agendadas"
 	existe=False
@@ -300,30 +301,32 @@ def detalleEmpresa(request):
 	if(Visita.objects.filter(Empresa=(Empresa.objects.get(Cuenta=cuenta))).exists()):
 		visita=Visita.objects.get(Empresa=(Empresa.objects.get(Cuenta=cuenta)))
 		visitas=visita.fecha_visita
+		if(visita.resolucion!=""):
+			resolucion=visita.resolucion
 		existe=True
 	else:
 		if request.POST.get("agendarVisita") is not None:
 			rut=request.POST.get("rut")
 			fecha_visita= datetime.date.today() + timedelta(days=1)
-			visita=Visita(fecha_visita=fecha_visita,Empresa=Empresa.objects.get(Cuenta=cuenta), Administrador=Administrador.objects.get(Cuenta=Cuenta.objects.get(rut=request.user.get_username())))
+			visita=Visita(fecha_visita=fecha_visita,Empresa=Empresa.objects.get(Cuenta=cuenta), Administrador=Administrador.objects.get(Cuenta=Cuenta.objects.get(rut=request.user.get_username())), resolucion="")
 			visita.save()
 			mensaje="Visita guardada correctamente"
-	if request.POST.get("activar") is not None and existe:
+			return render(request,"solicitudempresas.html",{'mensaje':mensaje,'cuentas':cuentas})
+	if request.POST.get("guardarResolucion") is not None and existe:
+		resolucion=request.POST.get("resolucion")
+		Visita.objects.filter(Empresa=Empresa.objects.get(Cuenta=cuenta), Administrador=(Administrador.objects.get(Cuenta=(Cuenta.objects.get(rut=request.user.get_username()))))).update(resolucion=resolucion)	
+		mensaje="Resolucion guardada correctamente"
+		return render(request,'solicitudempresas.html',{'mensaje':mensaje,'cuentas':cuentas})
+	if request.POST.get("activar") is not None and existe and resolucion!="":
 		rut=request.POST.get("rut")
 		user=User.objects.get(username=rut)
-		
+		mensaje="La cuenta no pudo activarse"
 		if Visita.objects.filter(Empresa=(Empresa.objects.get(Cuenta=cuenta)), Administrador=Administrador.objects.get(Cuenta=Cuenta.objects.get(rut=request.user.get_username()))).exists():
-			resolucion=request.POST.get("resolucion")
 			fec_activacion=datetime.date.today()
 			Empresa.objects.filter(Cuenta=cuenta).update(fec_activacion=fec_activacion)
-			Visita.objects.filter(Empresa=Empresa.objects.get(Cuenta=cuenta), Administrador=(Administrador.objects.get(Cuenta=(Cuenta.objects.get(rut=request.user.get_username()))))).update(resolucion=resolucion)
-		
-			
 			user.is_active=True
 			user.save()
 			mensaje="Cuenta activada correctamente"
-		
-		
-	
+			return render(request,'solicitudempresas.html',{'mensaje':mensaje,'cuentas':cuentas})
 
-	return render(request,"detalleempresa.html",{'existe':existe,'cuenta':cuenta,'mensaje':mensaje, 'visitas':visitas})
+	return render(request,"detalleempresa.html",{'resolucion':resolucion,'existe':existe,'cuenta':cuenta,'mensaje':mensaje, 'visitas':visitas})

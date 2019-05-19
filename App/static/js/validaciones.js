@@ -8,6 +8,14 @@ $(function(){
 
 
 	//solo letras en nombre
+	$("#rut").keypress(function soloNumeros(e){
+  var key = window.event ? e.which : e.keyCode;
+  if (key < 48 || key > 57) {
+    e.preventDefault();
+  }
+});
+
+
 	$("#nombre").keypress(function soloLetras(e){
     key = e.keyCode || e.which;
     tecla = String.fromCharCode(key).toLowerCase();
@@ -268,8 +276,52 @@ $("#registraEmpresa").submit(function() {
 		}
 
 	});
+//Guardar resolucion de visitas
+$("#guardaResolucion").submit(function() {
 
+		var resolucion=$("#resolucion").val();
+		resolucion=$.trim(resolucion);
+		$("#resolucion").val(resolucion);
 
+		if($("#resolucion").val()=="" ){
+			alert("No puedes rellenar la resolucion con espacios!!!");
+			return false;
+		}else{
+			
+				return true;
+		}
+		
+	});
+//Crear Administrador
+$("#registraAdmin").submit(function() {
+		error_message="";
+		error_rut=false;
+		error_contrasena=false;
+		error_fecha=false;
+		check_rut();
+		check_contrasenasIguales();
+		var nom=$("#nombre").val();
+		nom=$.trim(nom);
+		$("#nombre").val(nom);
 
+		
+
+		if(error_rut==false && error_contrasena==false && error_fecha==false && nom!=""){
+				$("#registraAdmin").submit();
+
+		}else{
+			if(nom==""){
+				alert("No se puede usar solo espacios");
+				return false;
+			}
+			
+			else{
+			alert(error_message.toLowerCase());
+			return false;	
+			}
+			
+		}
+
+	});
 
 });

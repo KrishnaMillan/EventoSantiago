@@ -6,24 +6,48 @@
 	<section id="main-content">
 	  <div class="text-intro">
 	    <h2>Listado de empresas no activas</h2>
-	  </div>
-	  
+	    {% ifnotequal mensaje "" %}
+		
+		<div class="alert alert-success" role="alert">
+			 {{mensaje}}
+			</div>
+	 	
+	 	{% endifnotequal%}
 
+
+	  </div>
+
+	  {%if not cuentas %}
+	 	 No hay solicitudes
+	 	 
+	 	 {%else%}
 	 	 {%for c in cuentas %}
+	 	 <table class="table table-striped">
 	 		<form method="GET" action="{% url 'detalleEmpresa'%}">
-	 			Nombre {{c.nombre}}<br>
-	 			Fecha Registro{{c.fecha_registro}}<br>
-	 			Comuna{{c.comuna}}<br>
+	 			<tr>
+	 				<td class="font-weight-bold">Nombre</td><td>{{c.nombre}}</td>
+	 			</tr> 
+	 			<tr>
+	 				<td class="font-weight-bold">Fecha Registro</td> <td>{{c.fecha_registro}}</td>
+	 			</tr>
+	 			<tr>
+	 				<td class="font-weight-bold">Comuna</td><td>{{c.comuna}}</td>
+	 			</tr>
 	 			
 	 			<input type="hidden" name="rut" id="rut" value="{{c.rut}}">
-	 			<input type="submit" name="VerDetalles" value="Ver Detalles">
+	 			<tr>
+	 				<td>
+	 				<input type="submit" class="btn btn-primary" name="VerDetalles" value="Ver Detalles">	
+	 				</td>
+	 			</tr>
 	 			 </form>
+	 			</table>
 	 			<br>
 	
-	 {% endfor%}
-	 
+		 {% endfor%}
+	 {%endif%}
 	 
 	 
 	</section>
-
+<script  src="{%static 'js/validaciones.js'%}"></script>
 {% endblock %}

@@ -14,7 +14,7 @@
 	  	</div>
 	  	<div class="columns">
 
-	  		<form method="POST" id="registraPersona" action="">
+	  		<form method="POST" id="registraAdmin" action="">
 	    	{% csrf_token %}
     			<div class="form-group">
             <label for="inputerut" style="width:100%; text-align: center;">
@@ -48,7 +48,6 @@
     				<div class="form-group col-md-6">
       					<label for="inputfech">Fecha de nacimiento</label>
       					<input type="date" id="fec_nac" name="fec_nac" class="form-control" required max="2003-12-31" min="1900-01-01">
-	 		 			<small id="fechelp" class="form-text text-muted">Debe ser mayor de 15 años</small>
     				</div>
   				</div>
    				<div class="form-row">
@@ -101,7 +100,7 @@
   				<div class="form-row">
   				<div class="form-group col-md-6">
       					<label for="inputfech">Fecha de contratación</label>
-      					<input type="date" id="fec_ingreso" name="fec_ingreso" class="form-control" required min="1900-01-01">
+      					<input type="date" id="fec_ingreso" name="fec_ingreso" class="form-control" required min="1900-01-01" max="2019-12-31">
 	 		 			
     				</div>
             </div>

@@ -14,33 +14,65 @@
 	    {%endifnotequal%}
 	  </div>
 	  
-	
-	 	 			
-	 			Rut {{cuenta.rut}}<br>
-	 			Nombre {{cuenta.nombre}}<br>
-	 			Fecha Registro {{cuenta.fecha_registro}}<br>
-	 			Tiene visita{{visitas}}<br>
-	 			{% if existe%}
-				<form method="POST">
-	 			{% csrf_token %}
-	 			Resolucion<input type="text" name="resolucion" id="idresolucion" required>
-	 			<input type="hidden" name="rut" id="rut" value="{{cuenta.rut}}">
-	 			<input type="submit" name="activar" value="Activar/Aprobar Cuenta">
-	 			<br>
-	 			</form>
-	 			{%else %}
-	 			<form method="POST">
-	 			{% csrf_token %}
+				<table class="table table-striped">
+	 	 			<tr>
+	 	 				<td class="font-weight-bold">Rut</td><td>{{cuenta.rut}}</td> 
+	 	 			</tr>
+	 				<tr>
+	 					<td class="font-weight-bold">Nombre</td><td>{{cuenta.nombre}}</td> 
+	 				</tr>
+	 				<tr>
+	 					<td class="font-weight-bold">Fecha Registro</td><td>{{cuenta.fecha_registro}}</td> 
+	 				</tr>
+	 				<tr>
+	 					<td class="font-weight-bold">Tiene visita</td> <td>{{visitas}}</td>
+	 				</tr>
+	 			
+	 			
+	 			<tr>
+		 				<td class="font-weight-bold">Resolucion</td><td>{{resolucion}}</td> 
+		 			</tr>
+	 			{% ifnotequal resolucion "" %}
+		 			
+		 			<form method="POST">
+		 			{% csrf_token %}
+		 			<input type="hidden" name="rut" id="rut" value="{{cuenta.rut}}">
+		 			<tr>
+		 				<td><input type="submit" class="btn btn-primary"  name="activar" value="Activar/Aprobar Cuenta"></td>
+		 			</tr>
+		 			<br>
+		 			</form>
+	 			{%else%}
+			 			{% if existe%}
+								<form method="POST" id="guardaResolucion">
+					 			{% csrf_token %}
+					 			Resolucion<input type="text" name="resolucion" id="resolucion" required>
+					 			<input type="hidden" name="rut" id="rut" value="{{cuenta.rut}}">
+					 			<tr>
+					 				<td>
+					 					<input type="submit"  class="btn btn-primary" name="guardarResolucion" value="Guardar Resolución">
+					 				</td>
+					 			</tr>
+					 			<br>
+					 			</form>
+			 			{%else %}
+					 			<form method="POST">
+					 			{% csrf_token %}
 
-	 			<input type="hidden" name="rut" id="rut" value="{{c.rut}}">
-	 			<input type="submit" name="agendarVisita" value="Agendar Visita">
-	 			<br>
-	 			</form>
-	 			{%endif%}
+					 			<input type="hidden" name="rut" id="rut" value="{{c.rut}}">
+					 			<tr>
+					 				<td>
+					 				<input type="submit" class="btn btn-primary" name="agendarVisita" value="Agendar Visita">
+					 			</td>
+					 			</tr>
+					 			<br>
+					 			</form>
+			 			{%endif%}
+	 			{%endifnotequal%}
 
-	  
+	  </table>
 	 
 	 
 	</section>
-
+<script  src="{%static 'js/validaciones.js'%}"></script>
 {% endblock %}
