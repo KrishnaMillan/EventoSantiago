@@ -309,6 +309,11 @@ table.table.table-striped td{
 	display: grid;
 	text-align: center;
 }
+table.table.table-active td{
+	min-width: 90%;
+	display: grid;
+	text-align: center;
+}
 .form-group.col-md-4{
 min-height: 60%;
 	min-width: 100%;

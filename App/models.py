@@ -33,17 +33,21 @@ class Empresa(models.Model):
 
 class Evento(models.Model):
 	id_evento=models.AutoField(max_length=15,primary_key=True)
+	nombre=models.CharField(max_length=1500)
+	descripcion=models.CharField(max_length=1000000000, null=True)
 	fecha=models.DateField(max_length=15)
-	hora=models.DateTimeField(max_length=15)
+	hora=models.TimeField(max_length=15)
 	comuna=models.CharField(max_length=15)
 	direccion=models.CharField(max_length=150)
 	cant_cupos=models.CharField(max_length=15)
-	pagReserva=models.BooleanField(default=True)
+	pagReserva=models.CharField(max_length=100000000000,null=True)
+	estado=models.BooleanField(default=True)
 	Empresa=models.ForeignKey(Empresa, on_delete=models.CASCADE)
+
 class Reserva(models.Model):
 	id_reserva=models.AutoField(max_length=15,primary_key=True)
 	fecha=models.DateField(max_length=15)
-	hora=models.DateTimeField(max_length=15)
+	hora=models.TimeField(max_length=15)
 	Evento=models.ForeignKey(Evento, on_delete=models.CASCADE)
 	Usuario=models.ForeignKey(Usuario, on_delete=models.CASCADE)
 

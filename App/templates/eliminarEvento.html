@@ -1,0 +1,23 @@
+ {% block content %}
+        
+        {% endblock %}
+
+
+{% extends 'maqueta.html' %}
+{% load staticfiles %}
+{% block informacion %}
+
+<section id="home-head" class="work">
+</section>
+<section id="main-content">
+	<div class="text-intro">
+		<h2>Eliminar Evento</h2>
+	</div>
+
+	<form method="post">
+    {% csrf_token %}
+    <h3>¿Está Seguro(a) que quiere eliminar el Evento ?</h3>
+    <button class="btn btn-danger" type="submit">Sí, Eliminar</button>
+    </form>
+</section>
+{% endblock %}

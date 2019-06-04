@@ -5,15 +5,119 @@ from .forms import Login
 from .models import Cuenta, Usuario, RegistroEmail, Empresa, Administrador, Evento, Reserva, Visita
 import datetime, time
 import uuid
+import string
 from datetime import timedelta, date
 from django.contrib.auth.models  import Group, User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage, send_mail
+from django.urls import reverse_lazy
+from django.contrib import messages
 
 # Create your views here.
 def index(request):
 	return render(request, "index.html")
+
+def misReservas(request):
+	reservas=Reserva.objects.filter(Usuario=Usuario.objects.get(Cuenta=Cuenta.objects.get(rut=request.user.get_username())))
+	if request.POST.get("cancelarReserva") is not None:
+		try:
+			reserva=Reserva.objects.get(id_reserva=request.POST.get("idreserva"))
+			reserva.delete()
+			mensaje="Ticket eliminado correctamente"
+			messages.success(request, mensaje)
+		except:
+			mensaje = "Error al cancelar"
+			messages.error(request, mensaje)
+
+	return render(request, 'misReservas.html',{'reservas':reservas})
+
+def misEventos(request):
+	event = Evento.objects.all()
+	misevents=""
+	if User.objects.filter(username=request.user.get_username(), groups__name='Empresas').exists():
+		misevents=Evento.objects.filter(Empresa=Empresa.objects.get(Cuenta=Cuenta.objects.get(rut=request.user.get_username())))
+	if request.POST.get("reservarEvento") is not None:
+		try:
+			evento = Evento.objects.get(id_evento=request.POST.get("idevento"))
+			reservaevento=Reserva.objects.filter(Evento=evento).count()
+			usuario= Usuario.objects.get(Cuenta=Cuenta.objects.get(rut=request.user.get_username()))
+			fecha=datetime.date.today().strftime("%Y-%m-%d")
+			hora=datetime.datetime.now().strftime("%H:%M:%S")
+			if(int(evento.cant_cupos)>reservaevento+1):
+				reserva=Reserva(fecha=fecha, hora=hora, Evento=evento, Usuario=usuario)
+				reserva.save()
+				mensaje="Ticket generado correctamente"
+				messages.success(request, mensaje)
+			else:
+				mensaje = "Error al reservar, no hay cupos!!!!"
+				messages.error(request, mensaje)
+			
+		except:
+			mensaje = "Error al reservar"
+			messages.error(request, mensaje)
+	return render(request, 'misEventos.html', {'event':event, 'misevents':misevents})
+
+def eliminarEvento(request, id_evento):
+	event = Evento.objects.get(id_evento = id_evento)
+	try:
+		event.estado=False
+		event.save()
+		mensaje = "Evento Eliminado Correctamente"
+		messages.success(request, mensaje)
+	except:
+		mensaje = "Error al eliminar"
+		messages.error(request, mensaje)
+	return redirect('misEventos')
+
+def crearEvento(request):
+	variables = {}
+	if request.POST:
+		event = Evento()
+		event.fecha = request.POST.get('fecha')
+		event.hora = datetime.datetime.strptime(request.POST.get('hora'),"%H:%M")
+		event.comuna = request.POST.get('comuna')
+		event.nombre=request.POST.get('nombre')
+		event.descripcion=request.POST.get('descripcion')
+		event.direccion = request.POST.get('direccion')
+		event.cant_cupos = request.POST.get('cupos')
+		event.pagReserva = request.POST.get('pagReserva')
+		event.Empresa = Empresa.objects.get(Cuenta=Cuenta.objects.get(rut=request.user.get_username()))
+		try:
+			event.save()
+			variables['mensaje'] = 'Evento Guardado' 
+		except:
+			variables['mensaje'] = 'Error al guardar'
+	return render(request, 'crearEvento.html', variables)
+
+
+def modificarEvento(request, id_evento):
+	event = Evento.objects.get(id_evento = id_evento)
+	event.fecha=event.fecha.strftime("%Y-%m-%d")
+	variables = {
+		'event':event
+	}
+
+	if request.POST:
+		event = Evento()
+		event.id_evento = request.POST.get('id')
+		event.fecha = request.POST.get('fecha')
+		event.hora = request.POST.get('hora')
+		event.comuna = request.POST.get('comuna')		
+		event.nombre=request.POST.get('nombre')
+		event.descripcion=request.POST.get('descripcion')
+		event.direccion = request.POST.get('direccion')
+		event.cant_cupos = request.POST.get('cupos')
+		event.pagReserva = request.POST.get('pagReserva')
+		event.Empresa = Empresa.objects.get(Cuenta=Cuenta.objects.get(rut=request.user.get_username()))
+		try:
+			event.save()
+			messages.success(request, 'Modificado correctamente')
+		except:
+			messages.error(request, 'Error')
+		return redirect('misEventos')
+
+	return render(request, 'modificarEvento.html', variables)
 
 def registrarse(request):
 	mensaje=""
@@ -79,8 +183,7 @@ def ingresar(request):
 				
 	except:
 		mensaje="No se ha encontrado el usuario"
-			
-	return render(request,"login.html",{'form':form, 'mensaje':mensaje})
+	return render(request,"login.html",{'form':form,'mensaje':mensaje})
 
 def salir(request):
 	logout(request)
@@ -100,6 +203,8 @@ def eliminar(request):
 	user=User.objects.get(username=request.user.get_username())
 	user.is_active=False
 	user.save()
+	usuario=Reserva.objects.filter(Usuario=Usuario.objects.get(Cuenta=Cuenta.objects.get(rut=request.user.get_username())))
+	usuario.delete()
 	if User.objects.filter(username=request.user.get_username(), groups__name='Usuarios').exists():
 		mensaje="Desactivada"
 	if User.objects.filter(username=request.user.get_username(), groups__name='Empresas').exists():

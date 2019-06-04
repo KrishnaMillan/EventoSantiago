@@ -1,0 +1,171 @@
+{% extends 'maqueta.html' %}
+{% load staticfiles %}
+{% block informacion %}
+
+<section id="home-head" class="work">
+</section>
+<section id="main-content">
+	<div class="text-intro">
+		<h2>Mis Eventos</h2>
+		{% if messages %}
+				{% for m in messages %}
+				<div class="alert alert-success" role="alert">{{ m }}</div>
+				{% endfor %}
+			{% endif%}
+	</div>
+	<div class="columns">
+	 {% if 'Empresas' ==  request.user.groups.all.0.name %} 
+             <a class="btn btn-primary" href="{% url 'crearEvento' %}" role="button">Agregar Evento</a><br>
+              {%endif%}
+		
+		
+		<br>
+		<table class="table table-active">
+			{% if event%}
+			{% for e in event %}
+			{% if 'Usuarios' ==  request.user.groups.all.0.name and e.estado %} 
+								
+				<tr>
+					<td class="font-weight-bold">N° de Evento</td>
+					<td>{{e.id_evento}}</td>
+				</tr>
+				<tr>
+					<td class="font-weight-bold">Nombre</td>
+					<td>{{e.nombre}}</td></tr>
+				<tr>
+					<td class="font-weight-bold">Descripción</td>
+					<td>{{e.descripcion}}</td></tr>
+				<tr>
+					<td class="font-weight-bold">Fecha</td>
+					<td>{{e.fecha}}</td>
+				</tr>
+				<tr>
+					<td class="font-weight-bold">Hora</td>
+					<td>{{e.hora}}</td>
+				</tr>
+				<tr>
+					<td class="font-weight-bold">Comuna</td>
+					<td>{{e.comuna}}</td></tr>
+				<tr>
+					<td class="font-weight-bold">Dirección</td>
+					<td>{{e.direccion}}</td></tr>
+				<tr>
+					<td class="font-weight-bold">Cupos</td>
+					<td>{{e.cant_cupos}}</td></tr>
+				<tr>
+					<td class="font-weight-bold">Página Web</td>
+					<td>{{e.pagReserva}}</td>
+				</tr>
+				{% if 'Empresas' ==  request.user.groups.all.0.name %} 
+					<tr>
+						<td class="font-weight-bold">Estado</td>
+						<td>{%if e.estado %}
+						Activo
+						{%else%}
+						Inactivo
+						{%endif%}</td></tr>
+					<tr>
+					{%endif%}
+					<td class="font-weight-bold">Acciones</td>
+					{% if 'Empresas' ==  request.user.groups.all.0.name %} 
+	             <td><a href="{% url 'eliminarEvento' e.id_evento %}">Eliminar</a> /<a href="{% url 'modificarEvento' e.id_evento %}">Actualizar</a>
+					</td>
+	              {%endif%}
+	              {% if 'Usuarios' ==  request.user.groups.all.0.name %} 
+	             <td><form  id="reservarEvento" action="" method="POST">
+	             	{% csrf_token %}
+	             <input type="hidden" name="idevento" id="id_evento" value="{{e.id_evento}}">
+	             <input class="btn btn-primary" type="submit" name="reservarEvento" value="Reservar ticket">
+	             	
+	             </form>
+					</td>
+	              {%endif%}
+				</tr>
+				<tr>
+					<td class="table-light">-</td>	
+					<td class="table-light">-</td>
+				</tr>
+				
+			
+
+			{%endif%}
+			{% endfor %}
+			{% else%}
+				<h1>No hay registros</h1>
+			{% endif%}
+
+			{% for e in misevents %}
+
+			{% if 'Empresas' ==  request.user.groups.all.0.name %}
+				<tr>
+					<td class="font-weight-bold">N° de Evento</td>
+					<td>{{e.id_evento}}</td>
+				</tr>
+				<tr>
+					<td class="font-weight-bold">Nombre</td>
+					<td>{{e.nombre}}</td></tr>
+				<tr>
+					<td class="font-weight-bold">Descripción</td>
+					<td>{{e.descripcion}}</td></tr>
+				<tr>
+					<td class="font-weight-bold">Fecha</td>
+					<td>{{e.fecha}}</td>
+				</tr>
+				<tr>
+					<td class="font-weight-bold">Hora</td>
+					<td>{{e.hora}}</td>
+				</tr>
+				<tr>
+					<td class="font-weight-bold">Comuna</td>
+					<td>{{e.comuna}}</td></tr>
+				<tr>
+					<td class="font-weight-bold">Dirección</td>
+					<td>{{e.direccion}}</td></tr>
+				<tr>
+					<td class="font-weight-bold">Cupos</td>
+					<td>{{e.cant_cupos}}</td></tr>
+				<tr>
+					<td class="font-weight-bold">Página Web</td>
+					<td>{{e.pagReserva}}</td>
+				</tr>
+				{% if 'Empresas' ==  request.user.groups.all.0.name %} 
+					<tr>
+						<td class="font-weight-bold">Estado</td>
+						<td>{%if e.estado %}
+						Activo
+						{%else%}
+						Inactivo
+						{%endif%}</td></tr>
+					<tr>
+					{%endif%}
+					<td class="font-weight-bold">Acciones</td>
+					{% if 'Empresas' ==  request.user.groups.all.0.name %} 
+	             <td><a href="{% url 'eliminarEvento' e.id_evento %}">Eliminar</a> /<a href="{% url 'modificarEvento' e.id_evento %}">Actualizar</a>
+					</td>
+	              {%endif%}
+	              {% if 'Usuarios' ==  request.user.groups.all.0.name %} 
+	             <td><form  id="reservarEvento" action="" method="POST">
+	             	{% csrf_token %}
+	             <input type="hidden" name="idevento" id="id_evento" value="{{e.id_evento}}">
+	             <input class="btn btn-primary" type="submit" name="reservarEvento" value="Reservar ticket">
+	             	
+	             </form>
+					</td>
+	              {%endif%}
+				</tr>
+				<tr>
+					<td class="table-light">-</td>	
+					<td class="table-light">-</td>
+				</tr>
+			{%else %}
+			<h1>No hay eventos!!</h1>
+			{%endif%}
+			{% endfor %}
+			
+			
+		</table>
+		
+	</div>
+</section>
+
+{% endblock %}

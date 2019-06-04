@@ -18,4 +18,9 @@ urlpatterns=[
     path('detalleEmpresa',views.detalleEmpresa, name="detalleEmpresa"),
     path('creaAdmin',views.creaAdmin, name="creaAdmin"),
     path('eliminaAdmin',views.eliminaAdmin, name="eliminaAdmin"),
+    path('misEventos', views.misEventos, name="misEventos"),
+    path('eliminarEvento/<id_evento>/', views.eliminarEvento, name="eliminarEvento"),
+    path('crearEvento', views.crearEvento, name="crearEvento"),
+    path('modificarEvento/<id_evento>/', views.modificarEvento, name="modificarEvento"),
+    path('misReservas', views.misReservas, name="misReservas"),
 ]
