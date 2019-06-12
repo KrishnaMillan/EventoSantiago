@@ -1,4 +1,6 @@
-{% extends 'maqueta.html' %}
+
+<!-- saved from url=(0138)https://www.pythonanywhere.com/user/duocuceventosantiago/files/home/duocuceventosantiago/EventoSantiago/App/templates/registroempresa.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>{% extends 'maqueta.html' %}
 {% load staticfiles %}
 
 {% block informacion %}
@@ -14,7 +16,7 @@
 	  	</div>
 	  	<div class="columns">
 
-	  		<form method="POST" id="registraEmpresa" action="">
+	  		<form method="POST" id="registraEmpresa" action="https://www.pythonanywhere.com/user/duocuceventosantiago/files/home/duocuceventosantiago/EventoSantiago/App/templates/registroempresa.html">
 	    	{% csrf_token %}
     			<div class="form-group">
             <label for="inputerut" style="width:100%; text-align: center;">
@@ -34,23 +36,27 @@
       				<label for="inputerut">Rut</label>
 
 
-      				<input type="text" id="rut" name="rut" class="form-control" required placeholder="123456784">
+      				<input type="text" id="rut" name="rut" class="form-control" required="" placeholder="123456784">
 
 	  				<small id="ruthelp" class="form-text text-muted">Ingrese rut de la empresa</small>
 
     			</div>
-  				
+
   				<div class="form-row">
   					<div class="form-group col-md-6">
       					<label for="inputnombre">Nombre Empresa</label>
-      					<input name="nombre" id="nombre" required placeholder="Alguien" class="form-control" minlength="3" maxlength="150"  type="text" >
+      					<input name="nombre" id="nombre" required="" placeholder="Alguien" class="form-control" minlength="3" maxlength="150" type="text">
     				</div>
-    				
+    				<div class="form-group col-md-6">
+                <label for="inputdireccion">Direccion</label>
+                <input type="text" id="direccion" name="direccion" class="form-control" required="">
+            </div>
+
   				</div>
    				<div class="form-row">
    					<div class="form-group col-md-6">
       					<label for="inputemail">Correo Electrónico Asociado</label>
-      					<input type="email" id="correoAsociado" name="correoAsociado" class="form-control" required placeholder="alguien@gmail.com">
+      					<input type="email" id="correoAsociado" name="correoAsociado" class="form-control" required="" placeholder="alguien@gmail.com">
     				</div>
     				<div class="form-group col-md-6">
     					<label for="inputcomuna">Comuna</label>
@@ -85,28 +91,23 @@
   					</div>
   				</div>
 
-  				<div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="inputdireccion">Direccion</label>
-                <input type="text" id="direccion" name="direccion" class="form-control" required>
-            </div>
-          </div>
+
           <div class="form-row">
     				<div class="form-group col-md-6">
       					<label for="inputcontra">Contraseña</label>
-      					<input type="password" id="contrasena" name="contrasena" class="form-control" required placeholder="********" minlength="8" maxlength="16">
+      					<input type="password" id="contrasena" name="contrasena" class="form-control" required="" placeholder="********" minlength="8" maxlength="16">
    					</div>
     				<div class="form-group col-md-6">
       					<label for="inputcontra2">Repita Contraseña</label>
-      					<input type="password" id="contrasena2" name="contrasena2" class="form-control" required placeholder="********" minlength="8" maxlength="16">
+      					<input type="password" id="contrasena2" name="contrasena2" class="form-control" required="" placeholder="********" minlength="8" maxlength="16">
     				</div>
 
-            
+
   				</div>
-            
+
    				<button type="submit" class="btn btn-primary" value="Registrarse">Solicitar Registro</button>
 			</form>
 		</div>
 	</section>
-	<script  src="{%static 'js/validaciones.js'%}"></script>
-{% endblock %}
+	<script src="./registroempresa_files/validaciones.js&#39;%}"></script>
+{% endblock %}</body></html>

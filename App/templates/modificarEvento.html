@@ -1,4 +1,6 @@
-{% extends 'maqueta.html' %}
+
+<!-- saved from url=(0138)https://www.pythonanywhere.com/user/duocuceventosantiago/files/home/duocuceventosantiago/EventoSantiago/App/templates/modificarEvento.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>{% extends 'maqueta.html' %}
 {% load staticfiles %}
 
 {% block informacion %}
@@ -7,13 +9,13 @@
   </section>
   <section id="main-content">
     <div class="text-intro">
-      <h2>Modificar Evento Evento</h2>
+      <h2>Modificar Evento</h2>
     </div>
       <div class="columns">
-        <form method="POST" id="crearEvento" action="" name="crearEvento">
+        <form method="POST" id="crearEvento" action="https://www.pythonanywhere.com/user/duocuceventosantiago/files/home/duocuceventosantiago/EventoSantiago/App/templates/modificarEvento.html" name="crearEvento">
         {% csrf_token %}
 
-        <input type="hidden" name="id" id="id" value={{event.id_evento}}>
+        <input type="hidden" name="id" id="id" value="{{event.id_evento}}">
 
 
          <div>{{ mensaje }}</div>
@@ -22,7 +24,7 @@
             <input type="date" id="fecha" name="fecha" class="form-control" value="{{event.fecha}}">
             <small id="datehelp" class="form-text text-muted"></small>
           </div>
-          
+
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="inputhora">Hora</label>
@@ -58,9 +60,10 @@
                 <option value="El Monte">El Monte</option><option value="Isla de Maipo">Isla de Maipo</option>
                 <option value="Padre Hurtado">Padre Hurtado</option><option value="Peñaflor">Peñaflor</option>
               </select><br>
-            </div>  
+            </div>
           </div>
-<div class="form-group col-md-6">
+          <div class="form-row">
+            <div class="form-group col-md-6">
                 <label for="inputnombre">Nombre</label>
                 <input type="text" id="nombre" name="nombre" class="form-control" value="{{event.nombre}}">
             </div>
@@ -68,6 +71,7 @@
                 <label for="inputdescripcion">Descripción</label>
                 <input type="text" id="descripcion" name="descripcion" class="form-control" value="{{event.descripcion}}">
             </div>
+        </div>
           <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="inputdireccion">Dirección</label>
@@ -87,8 +91,8 @@
           </div>
           <button type="submit" class="btn btn-success" value="Agregarevento">Modificar</button>
       </form>
-     
+
     </div>
   </section>
-  <script  src="{%static 'js/validaciones.js'%}"></script>
-{% endblock %}
+  <script src="./modificarEvento_files/validaciones.js&#39;%}"></script>
+{% endblock %}</body></html>

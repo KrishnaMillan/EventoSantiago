@@ -1,4 +1,6 @@
-{% extends 'maqueta.html' %}
+
+<!-- saved from url=(0134)https://www.pythonanywhere.com/user/duocuceventosantiago/files/home/duocuceventosantiago/EventoSantiago/App/templates/crearEvento.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>{% extends 'maqueta.html' %}
 {% load staticfiles %}
 
 {% block informacion %}
@@ -8,21 +10,28 @@
 	<section id="main-content">
 		<div class="text-intro">
 			<h2>Agrega nuevo Evento</h2>
+			{% ifnotequal mensaje '' %}
+
+		<div class="alert alert-success" role="alert">
+			 {{mensaje}}
+			</div>
+
+	 	{% endifnotequal%}
 	  </div>
 	  	<div class="columns">
-        <form method="POST" id="crearEvento" action="" name="crearEvento">
+        <form method="POST" id="crearEvento" action="https://www.pythonanywhere.com/user/duocuceventosantiago/files/home/duocuceventosantiago/EventoSantiago/App/templates/crearEvento.html" name="crearEvento">
 	    	{% csrf_token %}
-         <div>{{ mensaje }}</div>
+
           <div class="form-group">
       			<label for="feche">Fecha</label>
-      			<input type="date" id="fecha" name="fecha" class="form-control" required>
+      			<input type="date" id="fecha" name="fecha" class="form-control" required="">
             <small id="datehelp" class="form-text text-muted"></small>
           </div>
-  				
+
   				<div class="form-row">
   				  <div class="form-group col-md-6">
               <label for="inputhora">Hora</label>
-              <input type="time" name="hora" id="hora" class="form-control" required>
+              <input type="time" name="hora" id="hora" class="form-control" required="">
     			 </div>
            <div class="form-group col-md-6">
               <label for="inputcomuna">Comuna</label>
@@ -54,40 +63,40 @@
                 <option value="El Monte">El Monte</option><option value="Isla de Maipo">Isla de Maipo</option>
                 <option value="Padre Hurtado">Padre Hurtado</option><option value="Peñaflor">Peñaflor</option>
               </select><br>
-            </div>	
+            </div>
   				</div>
           <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="inputnombre">Nombre</label>
-                <input type="text" id="nombre" name="nombre" class="form-control" required placeholder="Gran evento en Lo Prado!!">
+                <input type="text" id="nombre" name="nombre" class="form-control" required="" placeholder="Gran evento en Lo Prado!!">
             </div>
             <div class="form-group col-md-6">
                 <label for="inputdescripcion">Descripción</label>
-                <input type="text" id="descripcion" name="descripcion" class="form-control" required placeholder="Ven a disfrutar....">
+                <input type="text" id="descripcion" name="descripcion" class="form-control" required="" placeholder="Ven a disfrutar....">
             </div>
             </div>
-            
+
    				<div class="form-row">
             <div class="form-group col-md-6">
       					<label for="inputdireccion">Dirección</label>
-      					<input type="text" id="direccion" name="direccion" class="form-control" required placeholder="ej: AV. Providencia 789">
+      					<input type="text" id="direccion" name="direccion" class="form-control" required="" placeholder="ej: AV. Providencia 789">
     				</div>
             <div class="form-group col-md-6">
                 <label>N° Cupos</label>
-                <input type="number" id="cupos" name="cupos" class="form-control" required>
+                <input type="number" id="cupos" name="cupos" class="form-control" required="">
             </div>
   				</div>
 
           <div class="form-row">
     				<div class="form-group col-md-6">
       					<label>Pagina Web</label>
-      					<input type="text" id="pagReserva" name="pagReserva" class="form-control" >
+      					<input type="text" id="pagReserva" name="pagReserva" class="form-control">
    					</div>
           </div>
           <button type="submit" class="btn btn-success" value="Agregarevento">Agregar</button>
 			</form>
-     
+
 		</div>
 	</section>
-	<script  src="{%static 'js/validaciones.js'%}"></script>
-{% endblock %}
+	<script src="./crearEvento_files/validaciones.js&#39;%}"></script>
+{% endblock %}</body></html>
