@@ -23,4 +23,6 @@ urlpatterns=[
     path('crearEvento', views.crearEvento, name="crearEvento"),
     path('modificarEvento/<id_evento>/', views.modificarEvento, name="modificarEvento"),
     path('misReservas', views.misReservas, name="misReservas"),
+    path('configuraEmpresa',views.configuraEmpresa, name="configuraEmpresa"),
+    path('modificaEmpresa',views.modificaEmpresa, name="modificaEmpresa"),
 ]

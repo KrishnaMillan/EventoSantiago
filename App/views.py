@@ -16,7 +16,44 @@ from django.contrib import messages
 # Create your views here.
 def index(request):
 	return render(request, "index.html")
+@login_required
+def configuraEmpresa(request):
+	empresa=User.objects.filter(groups__name='Empresas')
+	empresas=Cuenta.objects.filter(user__in=User.objects.filter(groups__name='Empresas'))
+	mensaje=""
 
+	if request.POST.get("activar") is not None:
+		user=User.objects.get(username=request.POST.get("rut"))
+		user.is_active=True
+		user.save()
+		mensaje="Cuenta activada correctamente"
+	if request.POST.get("eliminar") is not None:
+		user=User.objects.get(username=request.POST.get("rut"))
+		user.is_active=False
+		user.save()
+		mensaje="Cuenta desactivada correctamente"
+	if request.POST.get("modificar") is not None:
+		mensaje=""
+		cuenta=Cuenta.objects.get(rut=request.POST.get("rut"))
+		empresa=Empresa.objects.get(Cuenta=cuenta)
+		return render(request, 'modificaempresa.html',{'cuenta':cuenta, 'empresa':empresa,'mensaje':mensaje})
+	return render(request, "configuraempresa.html", {'mensaje':mensaje,'empresa':empresa,'empresas':empresas})
+
+def modificaEmpresa(request):
+	cuenta=Cuenta.objects.get(rut=request.POST.get("rut"))
+	user=User.objects.get(username=request.POST.get("rut"))
+	empresa=Empresa.objects.get(Cuenta=cuenta)
+	user.set_password(request.POST.get("contrasena"))
+	user.save()
+	cuenta.correoAsociado=request.POST.get("correoAsociado")
+	cuenta.comuna=request.POST.get("comuna")
+	empresa.direccion=request.POST.get("direccion")
+	cuenta.save()
+	empresa.save()
+	mensaje="Modificado correctamente"
+	return render(request, 'modificaempresa.html',{'cuenta':cuenta, 'empresa':empresa,'mensaje':mensaje})
+
+@login_required(login_url='ingresar')
 def misReservas(request):
 	reservas=Reserva.objects.filter(Usuario=Usuario.objects.get(Cuenta=Cuenta.objects.get(rut=request.user.get_username())))
 	if request.POST.get("cancelarReserva") is not None:
@@ -30,7 +67,7 @@ def misReservas(request):
 			messages.error(request, mensaje)
 
 	return render(request, 'misreservas.html',{'reservas':reservas})
-
+@login_required(login_url='ingresar')
 def misEventos(request):
 	event = Evento.objects.all()
 	misevents=""
@@ -56,7 +93,7 @@ def misEventos(request):
 			mensaje = "Error al reservar"
 			messages.error(request, mensaje)
 	return render(request, 'miseventos.html', {'event':event, 'misevents':misevents})
-
+@login_required(login_url='ingresar')
 def eliminarEvento(request, id_evento):
 	event = Evento.objects.get(id_evento = id_evento)
 	try:
@@ -68,7 +105,7 @@ def eliminarEvento(request, id_evento):
 		mensaje = "Error al eliminar"
 		messages.error(request, mensaje)
 	return redirect('misEventos')
-
+@login_required(login_url='ingresar')
 def crearEvento(request):
 	variables = {}
 	variables['mensaje']=''
@@ -90,7 +127,7 @@ def crearEvento(request):
 			variables['mensaje'] = 'Error al guardar'
 	return render(request, 'crearEvento.html', variables)
 
-
+@login_required(login_url='ingresar')
 def modificarEvento(request, id_evento):
 	event = Evento.objects.get(id_evento = id_evento)
 	event.fecha=event.fecha.strftime("%Y-%m-%d")
@@ -184,6 +221,7 @@ def ingresar(request):
 	except:
 		mensaje="No se ha encontrado el usuario"
 	return render(request,"login.html",{'form':form,'mensaje':mensaje})
+
 
 def salir(request):
 	logout(request)
