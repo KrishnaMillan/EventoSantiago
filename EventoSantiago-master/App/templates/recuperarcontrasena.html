@@ -1,0 +1,52 @@
+{% extends 'maqueta.html' %}
+{% load staticfiles %}
+{% block informacion %}	
+
+	
+		<section id="home-head" class="work">
+		</section>
+		<section id="main-content">
+		  <div class="text-intro">
+		    <h2>Cambiar Contraseña</h2>
+		    {% if existe %}
+		    {%else%}
+		 <div class="alert alert-danger" role="alert" style="text-align: center;">
+							 Este link ya no es valido, si quieres recuperar contraseña nuevamente, hazlo <a href="{% url 'recuperar'%}">aquí </a>							</div>
+			{%endif%}
+		    {% ifnotequal mensaje '' %}
+
+				{%ifequal mensaje 'Las contraseñas no coinciden'%}
+				<div class="alert alert-danger" role="alert" style="text-align: center;">
+							 {{mensaje}}
+							</div>
+				{%else%}
+				<div class="alert alert-success" role="alert" style="text-align: center;">
+							 {{mensaje}}
+							</div>
+				{%endifequal%}
+				{% endifnotequal %}
+		  </div>
+		  <div class="columns">
+{% if existe %}
+		 <form method="POST" id="recuperaContrasena2" action="">
+		        {% csrf_token %}
+		        <div class="form-group">
+  					<div class="form-group col-md-6">
+  						<label>Contraseña nueva: </label><input type="password" name="contrasena1" id="contrasena1" required placeholder="********" minlength="8" maxlength="16" class="form-control">
+		        
+  					</div>
+  					<div class="form-group col-md-6">
+  					<label>Repetir contraseña:</label> <input type="password" name="contrasena2" id="contrasena2" required placeholder="********" minlength="8" maxlength="16" class="form-control">
+  				</div>
+  				</div>
+		        
+		        <input type="submit" class="btn btn-primary" value="Cambiar Contraseña">
+		 </form>
+		 
+		
+	{% endif%}
+		  </div>
+		</section>
+
+<script  src="{%static 'js/validaciones.js'%}"></script>
+{% endblock %}

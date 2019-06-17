@@ -1,0 +1,208 @@
+{% extends 'maqueta.html' %}
+{% load staticfiles %}
+{% block informacion %}
+
+<section id="home-head" class="work">
+</section>
+<section id="main-content">
+	<div class="text-intro">
+		<h2>Mis Eventos</h2>
+		{% if messages %}
+				{% for m in messages %}
+				<div class="alert alert-success" role="alert">{{ m }}</div>
+				{% endfor %}
+			{% endif%}
+	</div>
+	<div class="columns">
+	 {% if 'Empresas' ==  request.user.groups.all.0.name %} 
+             <a class="btn btn-primary" href="{% url 'crearEvento' %}" role="button">Agregar Evento</a><br>
+              {%endif%}
+              {%if 'Usuarios' == request.user.groups.all.0.name %}
+		<form method="POST" id="FiltroEvento" action="https://www.pythonanywhere.com/user/duocuceventosantiago/files/home/duocuceventosantiago/EventoSantiago/App/templates/FiltroEvento.html">{% csrf_token %}
+			<div class="form-group col-md-6">
+				<label for="inputfiltrocomuna">Filtrar por comuna: </label>
+				<select id="comunaf" name="comunaf" class="form-control">
+					<option value="Todas">Todas</option>
+					<option value="Santiago">Santiago</option><option value="Cerrillos">Cerrillos</option>
+					<option value="Cerro Navia">Cerro Navia</option><option value="Conchali">Conchalí</option>
+					<option value="El Bosque">El Bosque</option><option value="Estación Central">Estación Central</option>
+					<option value="Huechuraba">Huechuraba</option><option value="Independencia">Independencia</option>
+					<option value="La Cisterna">La Cisterna</option><option value="La Florida">La Florida</option>
+					<option value="La Granja">La Granja</option><option value="La Pintana">La Pintana</option>
+					<option value="La Reina">La Reina</option><option value="Las Condes">Las Condes</option>
+					<option value="Lo Barnechea">Lo Barnechea</option><option value="Lo Espejo">Lo Espejo</option>
+					<option value="Lo Prado">Lo Prado</option><option value="Macul">Macul</option>
+					<option value="Maipú">Maipú</option><option value="Ñuñoa">Ñuñoa</option>
+					<option value="Pedro Aguirre Cerda">Pedro Aguirre Cerda</option><option value="Peñalolén">Peñalolén</option>
+					<option value="Providencia">Providencia</option><option value="Pudahuel">Pudahuel</option>
+					<option value="Quilicura">Quilicura</option><option value="Quinta Normal">Quinta Normal</option>
+					<option value="Recoleta">Recoleta</option><option value="Renca">Renca</option>
+					<option value="San Joaquín">San Joaquín</option><option value="San Miguel">San Miguel</option>
+					<option value="San Ramón">San Ramón</option><option value="Vitacura">Vitacura</option>
+					<option value="Puente Alto">Puente Alto</option><option value="Pirque">Pirque</option>
+					<option value="San José de Maipo">San José de Maipo</option><option value="Colina">Colina</option>
+					<option value="Lampa">Lampa</option><option value="Til til">Til til</option>
+					<option value="San Bernardo">San Bernardo</option><option value="Buin">Buin</option>
+					<option value="Calera de Tango">Calera de Tango</option><option value="Paine">Paine</option>
+					<option value="Melipilla">Melipilla</option><option value="Alhué">Alhué</option>
+					<option value="Curacaví">Curacaví</option><option value="María Pinto">María Pinto</option>
+					<option value="San Pedro">San Pedro</option><option value="Talagante">Talagante</option>
+					<option value="El Monte">El Monte</option><option value="Isla de Maipo">Isla de Maipo</option>
+					<option value="Padre Hurtado">Padre Hurtado</option><option value="Peñaflor">Peñaflor</option>
+			  	</select><br>
+			  	<input class="btn btn-primary" type="submit" name="FiltrarEvento" value="Filtrar Evento">
+			</div>
+		{%endif%}
+		</form>
+		
+		
+		<br>
+		<table class="table table-active">
+			{% if event%}
+			{% for e in event %}
+			{% if 'Usuarios' ==  request.user.groups.all.0.name and e.estado %} 
+								
+				<tr>
+					<td class="font-weight-bold">N° de Evento</td>
+					<td>{{e.id_evento}}</td>
+				</tr>
+				<tr>
+					<td class="font-weight-bold">Nombre</td>
+					<td>{{e.nombre}}</td></tr>
+				<tr>
+					<td class="font-weight-bold">Descripción</td>
+					<td>{{e.descripcion}}</td></tr>
+				<tr>
+					<td class="font-weight-bold">Fecha</td>
+					<td>{{e.fecha}}</td>
+				</tr>
+				<tr>
+					<td class="font-weight-bold">Hora</td>
+					<td>{{e.hora}}</td>
+				</tr>
+				<tr>
+					<td class="font-weight-bold">Comuna</td>
+					<td>{{e.comuna}}</td></tr>
+				<tr>
+					<td class="font-weight-bold">Dirección</td>
+					<td>{{e.direccion}}</td></tr>
+				<tr>
+					<td class="font-weight-bold">Cupos</td>
+					<td>{{e.cant_cupos}}</td></tr>
+				<tr>
+					<td class="font-weight-bold">Página Web</td>
+					<td>{{e.pagReserva}}</td>
+				</tr>
+				{% if 'Empresas' ==  request.user.groups.all.0.name %} 
+					<tr>
+						<td class="font-weight-bold">Estado</td>
+						<td>{%if e.estado %}
+						Activo
+						{%else%}
+						Inactivo
+						{%endif%}</td></tr>
+					<tr>
+					{%endif%}
+					<td class="font-weight-bold">Acciones</td>
+					{% if 'Empresas' ==  request.user.groups.all.0.name %} 
+	             <td><a href="{% url 'eliminarEvento' e.id_evento %}">Eliminar</a> /<a href="{% url 'modificarEvento' e.id_evento %}">Actualizar</a>
+					</td>
+	              {%endif%}
+	              {% if 'Usuarios' ==  request.user.groups.all.0.name %} 
+	             <td><form  id="reservarEvento" action="" method="POST">
+	             	{% csrf_token %}
+	             <input type="hidden" name="idevento" id="id_evento" value="{{e.id_evento}}">
+	             <input class="btn btn-primary" type="submit" name="reservarEvento" value="Reservar ticket">
+	             	
+	             </form>
+					</td>
+	              {%endif%}
+				</tr>
+				<tr>
+					<td class="table-light">-</td>	
+					<td class="table-light">-</td>
+				</tr>
+				
+			
+
+			{%endif%}
+			{% endfor %}
+			{% else%}
+				<h1>No hay registros</h1>
+			{% endif%}
+
+			{% for e in misevents %}
+
+			{% if 'Empresas' ==  request.user.groups.all.0.name %}
+				<tr>
+					<td class="font-weight-bold">N° de Evento</td>
+					<td>{{e.id_evento}}</td>
+				</tr>
+				<tr>
+					<td class="font-weight-bold">Nombre</td>
+					<td>{{e.nombre}}</td></tr>
+				<tr>
+					<td class="font-weight-bold">Descripción</td>
+					<td>{{e.descripcion}}</td></tr>
+				<tr>
+					<td class="font-weight-bold">Fecha</td>
+					<td>{{e.fecha}}</td>
+				</tr>
+				<tr>
+					<td class="font-weight-bold">Hora</td>
+					<td>{{e.hora}}</td>
+				</tr>
+				<tr>
+					<td class="font-weight-bold">Comuna</td>
+					<td>{{e.comuna}}</td></tr>
+				<tr>
+					<td class="font-weight-bold">Dirección</td>
+					<td>{{e.direccion}}</td></tr>
+				<tr>
+					<td class="font-weight-bold">Cupos</td>
+					<td>{{e.cant_cupos}}</td></tr>
+				<tr>
+					<td class="font-weight-bold">Página Web</td>
+					<td>{{e.pagReserva}}</td>
+				</tr>
+				{% if 'Empresas' ==  request.user.groups.all.0.name %} 
+					<tr>
+						<td class="font-weight-bold">Estado</td>
+						<td>{%if e.estado %}
+						Activo
+						{%else%}
+						Inactivo
+						{%endif%}</td></tr>
+					<tr>
+					{%endif%}
+					<td class="font-weight-bold">Acciones</td>
+					{% if 'Empresas' ==  request.user.groups.all.0.name %} 
+	             <td><a href="{% url 'eliminarEvento' e.id_evento %}">Eliminar</a> /<a href="{% url 'modificarEvento' e.id_evento %}">Actualizar</a>
+					</td>
+	              {%endif%}
+	              {% if 'Usuarios' ==  request.user.groups.all.0.name %} 
+	             <td><form  id="reservarEvento" action="" method="POST">
+	             	{% csrf_token %}
+	             <input type="hidden" name="idevento" id="id_evento" value="{{e.id_evento}}">
+	             <input class="btn btn-primary" type="submit" name="reservarEvento" value="Reservar ticket">
+	             	
+	             </form>
+					</td>
+	              {%endif%}
+				</tr>
+				<tr>
+					<td class="table-light">-</td>	
+					<td class="table-light">-</td>
+				</tr>
+			{%else %}
+			<h1>No hay eventos!!</h1>
+			{%endif%}
+			{% endfor %}
+			
+			
+		</table>
+		
+	</div>
+</section>
+
+{% endblock %}

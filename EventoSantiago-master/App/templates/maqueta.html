@@ -1,0 +1,68 @@
+{% load staticfiles %}
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Eventos Santiago</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="{%static 'css/style.css'%}">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+ 
+
+</head>
+<body>
+<header>
+  <nav class="main-nav">
+    <ul>
+      <li>
+        <ul>
+          <li><a href="{% url 'index'%}" >Inicio</a></li>
+          
+           {% if user.is_authenticated %}
+              {% if 'Usuarios' ==  request.user.groups.all.0.name %} 
+              <li><a href="{% url 'micuenta'%}">Mi cuenta</a></li>
+              <li><a href="{% url 'misEventos' %}">Eventos</a></li>
+              <li><a href="{% url 'misReservas' %}">Mis Reservas</a></li>
+                <li><a href="{% url 'salir'%}">Salir</a></li>
+              {%endif%}
+              {% if 'Empresas' ==  request.user.groups.all.0.name %} 
+              <li><a href="{% url 'misEventos' %}">Mis Eventos</a></li>
+              <li><a href="{% url 'micuenta'%}">Mi cuenta</a></li>
+                <li><a href="{% url 'salir'%}">Salir</a></li>
+              {%endif%}
+              {% if 'Administradores' ==  request.user.groups.all.0.name %} 
+              <li><a href="{% url 'solicitudEmpresas' %}">Solicitudes</a></li>
+              <li><a href="{% url 'micuenta'%}">Mi cuenta</a></li>
+              <li><a href="{% url 'verCuentas' %}">Cuentas</a></li>
+                <li><a href="{% url 'salir'%}">Salir</a></li>
+              {%endif%}
+              {% if 'administrador' ==  user.get_username %} 
+              <li><a href="{% url 'creaAdmin' %}">Crear Administrador</a></li>
+              <li><a href="{% url 'eliminaAdmin' %}">Eliminar Administrador</a></li>
+              <li><a href="{% url 'configuraEmpresa' %}">Configurar Empresa</a></li>
+                <li><a href="{% url 'salir'%}">Salir</a></li>
+              {%endif%}
+              {% else %}
+                
+                <li><a href="{% url 'registrarse' %}">Registrarse</a></li>
+                <li><a href="{% url 'ingresar'%}">Iniciar Sesión</a></li>
+            {% endif %}
+          
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</header>
+{% block imagen %}
+
+{% endblock%}
+{% block informacion %}
+{% endblock %}
+
+
+<footer>
+  <div class="copyright"><small>Copyright. All Rights Reserved | by <a target="_blank" rel="nofollow" href="#">EventoSantiago</a>.</small></div>
+</footer>
+
+</body>
+</html>
