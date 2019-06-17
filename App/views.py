@@ -53,6 +53,38 @@ def modificaEmpresa(request):
 	mensaje="Modificado correctamente"
 	return render(request, 'modificaempresa.html',{'cuenta':cuenta, 'empresa':empresa,'mensaje':mensaje})
 
+
+def FiltroEvento(request):
+	Eve = Evento.objects.all()
+	filtro = request.POST.get('comunaf')
+	if request.POST.get("comunaf") is not None:
+		Eve = Evento.objects.filter(comuna=filtro)
+	if request.POST.get("comunaf") == 'Todas':
+		Eve = Evento.objects.all()
+		
+	if request.POST.get("reservarEvento") is not None:
+		try:
+			evento = Evento.objects.get(id_evento=request.POST.get("idevento"))
+			reservaevento=Reserva.objects.filter(Evento=evento).count()
+			usuario= Usuario.objects.get(Cuenta=Cuenta.objects.get(rut=request.user.get_username()))
+			fecha=datetime.date.today().strftime("%Y-%m-%d")
+			hora=datetime.datetime.now().strftime("%H:%M:%S")
+			if(int(evento.cant_cupos)>reservaevento+1):
+				reserva=Reserva(fecha=fecha, hora=hora, Evento=evento, Usuario=usuario)
+				reserva.save()
+				mensaje="Ticket generado correctamente"
+				messages.success(request, mensaje)
+			else:
+				mensaje = "Error al reservar, no hay cupos!!!!"
+				messages.error(request, mensaje)
+
+		except:
+			mensaje = "Error al reservar"
+			messages.error(request, mensaje)
+
+	return render(request, 'FiltroEvento.html', {'Eve':Eve, 'filtro':filtro})
+
+
 @login_required(login_url='ingresar')
 def misReservas(request):
 	reservas=Reserva.objects.filter(Usuario=Usuario.objects.get(Cuenta=Cuenta.objects.get(rut=request.user.get_username())))
@@ -456,6 +488,17 @@ def solicitudEmpresas(request):
 	mensaje=""
 	cuentas=Cuenta.objects.filter(user__in=User.objects.filter(groups__name='Empresas', is_active=False))
 	return render(request,"solicitudempresas.html",{'cuentas':cuentas,'mensaje':mensaje})
+
+
+@login_required(login_url='ingresar')
+def verCuentas(request):
+	mensaje=""
+	usuario=User.objects.filter(groups__name='Empresas')
+	empresas=Cuenta.objects.filter(user__in=User.objects.filter(groups__name='Empresas'))
+	usuu=User.objects.filter(groups__name='Usuarios')
+	usu=Cuenta.objects.filter(user__in=User.objects.filter(groups__name='Usuarios'))
+	return render(request,"verCuentas.html",{'mensaje':mensaje,'empresas':empresas, 'usuario':usuario, 'usuu':usuu, 'usu':usu})
+
 
 @login_required(login_url='ingresar')
 def detalleEmpresa(request):

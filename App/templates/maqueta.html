@@ -33,6 +33,7 @@
               {% if 'Administradores' ==  request.user.groups.all.0.name %} 
               <li><a href="{% url 'solicitudEmpresas' %}">Solicitudes</a></li>
               <li><a href="{% url 'micuenta'%}">Mi cuenta</a></li>
+              <li><a href="{% url 'verCuentas' %}">Cuentas</a></li>
                 <li><a href="{% url 'salir'%}">Salir</a></li>
               {%endif%}
               {% if 'administrador' ==  user.get_username %} 

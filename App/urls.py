@@ -25,4 +25,6 @@ urlpatterns=[
     path('misReservas', views.misReservas, name="misReservas"),
     path('configuraEmpresa',views.configuraEmpresa, name="configuraEmpresa"),
     path('modificaEmpresa',views.modificaEmpresa, name="modificaEmpresa"),
+    path('FiltroEvento', views.FiltroEvento, name="FiltroEvento"),
+    path('verCuentas', views.verCuentas, name="verCuentas"),
 ]
