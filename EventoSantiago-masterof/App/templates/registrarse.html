@@ -1,0 +1,105 @@
+{% extends 'maqueta.html' %}
+{% load staticfiles %}
+
+{% block informacion %}
+
+	<section id="home-head" class="work">
+	</section>
+	<section id="main-content">
+		<div class="text-intro">
+			<h2>Registrate</h2>
+	  	</div>
+	  	<div class="columns">
+
+	  		<form method="POST" id="registraPersona" action="">
+	    	{% csrf_token %}
+    			<div class="form-group">
+            <label for="inputerut" style="width:100%; text-align: center;">
+              {% ifnotequal mensaje '' %}
+                  {% ifequal mensaje 'Usuario agregado correctamente'%}
+                  <div class="alert alert-success" role="alert">
+                    {{mensaje}}
+                  </div>
+                  {% else %}
+                  <div class="alert alert-danger" role="alert">
+                    {{mensaje}}
+                  </div>
+                  {% endifequal%}
+              {% endifnotequal %}
+            </label><br>
+
+      				<label for="inputerut">Rut</label>
+
+
+      				<input type="text" id="rut" name="rut" class="form-control" required placeholder="123456784">
+
+	  				<small id="ruthelp" class="form-text text-muted">Ingrese rut sin puntos, ni guión</small>
+
+    			</div>
+  				
+  				<div class="form-row">
+  					<div class="form-group col-md-6">
+      					<label for="inputnombre">Nombre</label>
+      					<input name="nombre" id="nombre" required placeholder="Alguien" class="form-control" minlength="3" maxlength="150"  type="text" >
+    				</div>
+    				<div class="form-group col-md-6">
+      					<label for="inputfech">Fecha de nacimiento</label>
+      					<input type="date" id="fec_nac" name="fec_nac" class="form-control" required max="2003-12-31" min="1900-01-01">
+	 		 			<small id="fechelp" class="form-text text-muted">Debe ser mayor de 15 años</small>
+    				</div>
+  				</div>
+   				<div class="form-row">
+   					<div class="form-group col-md-6">
+      					<label for="inputemail">Correo Electrónico</label>
+      					<input type="email" id="correoAsociado" name="correoAsociado" class="form-control" required placeholder="alguien@gmail.com">
+    				</div>
+    				<div class="form-group col-md-6">
+    					<label for="inputcomuna">Comuna</label>
+    					<select id="comuna" name="comuna" class="form-control">
+	        				<option value="Santiago">Santiago</option><option value="Cerrillos">Cerrillos</option>
+  							<option value="Cerro Navia">Cerro Navia</option><option value="Conchali">Conchalí</option>
+  							<option value="El Bosque">El Bosque</option><option value="Estación Central">Estación Central</option>
+  							<option value="Huechuraba">Huechuraba</option><option value="Independencia">Independencia</option>
+  							<option value="La Cisterna">La Cisterna</option><option value="La Florida">La Florida</option>
+  							<option value="La Granja">La Granja</option><option value="La Pintana">La Pintana</option>
+  							<option value="La Reina">La Reina</option><option value="Las Condes">Las Condes</option>
+  							<option value="Lo Barnechea">Lo Barnechea</option><option value="Lo Espejo">Lo Espejo</option>
+  							<option value="Lo Prado">Lo Prado</option><option value="Macul">Macul</option>
+  							<option value="Maipú">Maipú</option><option value="Ñuñoa">Ñuñoa</option>
+  							<option value="Pedro Aguirre Cerda">Pedro Aguirre Cerda</option><option value="Peñalolén">Peñalolén</option>
+  							<option value="Providencia">Providencia</option><option value="Pudahuel">Pudahuel</option>
+  							<option value="Quilicura">Quilicura</option><option value="Quinta Normal">Quinta Normal</option>
+  							<option value="Recoleta">Recoleta</option><option value="Renca">Renca</option>
+							<option value="San Joaquín">San Joaquín</option><option value="San Miguel">San Miguel</option>
+							<option value="San Ramón">San Ramón</option><option value="Vitacura">Vitacura</option>
+							<option value="Puente Alto">Puente Alto</option><option value="Pirque">Pirque</option>
+							<option value="San José de Maipo">San José de Maipo</option><option value="Colina">Colina</option>
+							<option value="Lampa">Lampa</option><option value="Til til">Til til</option>
+							<option value="San Bernardo">San Bernardo</option><option value="Buin">Buin</option>
+							<option value="Calera de Tango">Calera de Tango</option><option value="Paine">Paine</option>
+							<option value="Melipilla">Melipilla</option><option value="Alhué">Alhué</option>
+							<option value="Curacaví">Curacaví</option><option value="María Pinto">María Pinto</option>
+							<option value="San Pedro">San Pedro</option><option value="Talagante">Talagante</option>
+							<option value="El Monte">El Monte</option><option value="Isla de Maipo">Isla de Maipo</option>
+							<option value="Padre Hurtado">Padre Hurtado</option><option value="Peñaflor">Peñaflor</option>
+  						</select><br>
+  					</div>
+  				</div>
+  				<div class="form-row">
+    				<div class="form-group col-md-6">
+      					<label for="inputcontra">Contraseña</label>
+      					<input type="password" id="contrasena" name="contrasena" class="form-control" required placeholder="********" minlength="8" maxlength="16">
+   					</div>
+    				<div class="form-group col-md-6">
+      					<label for="inputcontra2">Repita Contraseña</label>
+      					<input type="password" id="contrasena2" name="contrasena2" class="form-control" required placeholder="********" minlength="8" maxlength="16">
+    				</div>
+  				</div>
+            
+   				<button type="submit" class="btn btn-primary" value="Registrarse">Registrarse</button>
+			</form>
+			<h6><a href="{% url 'registroEmpresa' %}">Soy Empresa</a></h6>
+		</div>
+	</section>
+	<script  src="{%static 'js/validaciones.js'%}"></script>
+{% endblock %}
